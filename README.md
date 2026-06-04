@@ -1,405 +1,73 @@
-# 🚀 VisualDSA
+# AlgoJudge — Interactive DSA Studio & Algorithm Visualizer
 
-> An AI-powered Data Structures & Algorithms learning platform with interactive visualizations, personalized learning paths, coding practice, and interview preparation.
+A premium, fully client-side coding interview preparation platform with algorithm visualizers, multi-language code editing, and interactive learning tools.
 
----
+## Features
 
-![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-Blue?style=for-the-badge&logo=typescript)
-![MongoDB](https://img.shields.io/badge/MongoDB-Green?style=for-the-badge&logo=mongodb)
-![Node.js](https://img.shields.io/badge/Node.js-Backend-success?style=for-the-badge&logo=node.js)
-![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
+- **20 DSA Problems** — Curated from top tech interview banks (Google, Meta, Amazon, Microsoft)
+- **Algorithm Visualizer** — Step-through animations for sorting, trees, graphs, linked lists, and more
+- **Multi-Language Editor** — Write and test code in Python, JavaScript, C++, and Java
+- **Interactive Timeline** — Software engineering lifecycle walkthrough
+- **Performance Analytics** — Track your progress, streaks, and category mastery
+- **Read & Discuss** — DSA tutorials and community discussion forum
+- **Dark & Light Themes** — Premium glassmorphism design with smooth transitions
+- **Supreme King Haki Entrance** — Stunning animated intro with synthesized audio
 
----
+## How to Run
 
-# 📖 About
+This is a **static website** — no build step or server installation required.
 
-VisualDSA is a next-generation learning platform designed to make Data Structures & Algorithms intuitive, visual, and interactive.
-
-Unlike traditional coding platforms, VisualDSA focuses on:
-
-- 🎨 Visual-first algorithm learning
-- 🤖 AI-driven recommendations
-- 📊 Real-time progress analytics
-- 💻 Interactive coding practice
-- 🎯 Interview preparation
-- 📱 Fully responsive modern UI
-
-The platform is built for:
-
-- Engineering Students
-- Placement Aspirants
-- FAANG Interview Candidates
-- Competitive Programmers
-- Career Switchers
-
----
-
-# ✨ Features
-
-## 🔐 Authentication System
-
-- Email & Password Login
-- Google OAuth Authentication
-- JWT-based Secure Sessions
-- Password Reset
-- Email Verification
-
----
-
-## 🎬 Algorithm Visualizer
-
-Interactive visual learning system supporting:
-
-### Sorting Algorithms
-- Bubble Sort
-- Merge Sort
-- Quick Sort
-
-### Searching
-- Binary Search
-
-### Data Structures
-- Stack
-- Queue
-- Linked List
-
-### Graph Algorithms
-- BFS
-- DFS
-- Dijkstra
-
-### Visualizer Features
-- ▶️ Play / Pause
-- ⏩ Speed Controls
-- ⏮️ Step Navigation
-- 🎯 Pseudocode Synchronization
-- 🎨 Color-coded Animations
-- ✏️ Editable Inputs
-
----
-
-## 💻 Online Coding Platform
-
-### Supported Languages
-- JavaScript
-- Python
-- Java
-- C++
-
-### Editor Features
-- Monaco Editor
-- Syntax Highlighting
-- Auto-complete
-- Theme Switching
-- Run & Submit Code
-- Console Output
-- Hidden Test Cases
-
----
-
-## 🤖 AI Features
-
-- AI Study Recommendations
-- AI Doubt Solver
-- AI Code Explanation
-- AI Complexity Analysis
-- AI Performance Reports
-- AI Weekly Summaries
-- Personalized Learning Paths
-
----
-
-## 📊 Dashboard & Analytics
-
-- Topic Mastery Radar Charts
-- Streak Tracking
-- Solve Heatmaps
-- Weak Area Detection
-- AI Recommendations
-- Progress Analytics
-- Performance Reports
-
----
-
-## 💎 Premium Features
-
-- Unlimited Problem Solving
-- Advanced Visual Modules
-- AI Mentor Access
-- Mock Interview Simulator
-- Advanced Analytics
-- Weekly AI Reports
-
----
-
-# 🛠️ Tech Stack
-
-## Frontend
-
-| Technology | Purpose |
-|------------|---------|
-| Next.js 15 | Frontend Framework |
-| React | UI Development |
-| TypeScript | Type Safety |
-| TailwindCSS | Styling |
-| Framer Motion | Animations |
-| D3.js | Algorithm Visualizations |
-| Zustand | State Management |
-| Monaco Editor | Code Editor |
-
----
-
-## Backend
-
-| Technology | Purpose |
-|------------|---------|
-| Node.js | Runtime |
-| Express.js | Backend APIs |
-| MongoDB | Database |
-| Redis | Caching |
-| Socket.IO | Real-time Features |
-| BullMQ | Queue Processing |
-| Docker | Sandbox Execution |
-
----
-
-## AI & Integrations
-
-| Service | Usage |
-|---------|------|
-| OpenAI GPT-4o | AI Assistant |
-| Razorpay | Payments |
-| Firebase/Auth0 | Authentication |
-| Cloudflare R2 | Storage |
-
----
-
-# 📂 Project Structure
-
+### Option 1: Python (recommended)
 ```bash
-VisualDSA/
-│
-├── frontend/
-│   ├── app/
-│   ├── components/
-│   ├── hooks/
-│   ├── services/
-│   ├── store/
-│   ├── visualizers/
-│   └── utils/
-│
-├── backend/
-│   ├── controllers/
-│   ├── routes/
-│   ├── middleware/
-│   ├── models/
-│   ├── services/
-│   └── utils/
-│
-├── docs/
-├── tests/
-├── docker/
-└── README.md
+cd AlgoJudge-Site
+python -m http.server 8000
 ```
+Then open [http://localhost:8000](http://localhost:8000)
 
----
-
-# ⚡ Installation
-
-## 1️⃣ Clone Repository
-
+### Option 2: Node.js
 ```bash
-git clone https://github.com/yourusername/visualdsa.git
-cd visualdsa
+npx serve .
 ```
 
----
+### Option 3: VS Code
+Install the "Live Server" extension, right-click `index.html`, and select **Open with Live Server**.
 
-## 2️⃣ Install Dependencies
+### Option 4: Direct file open
+Simply double-click `index.html` to open in your browser. (Some features like the matrix canvas may work differently due to CORS restrictions.)
 
-### Frontend
+## Demo Login
 
-```bash
-cd frontend
-npm install
+- **Username:** `demo`
+- **Password:** `password123`
+
+Or click **"Sign In as Demo User"** / **"Continue as Guest"** on the login screen.
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Structure | HTML5 |
+| Styling | Tailwind CSS (CDN) + Custom CSS |
+| Logic | Vanilla JavaScript |
+| Fonts | Inter + Fira Code (Google Fonts) |
+| Icons | Font Awesome 6 |
+| Audio | Web Audio API (synthesized) |
+
+## File Structure
+
+```
+├── index.html              # Main HTML page (SPA shell)
+├── styles.css              # Custom design system & animations
+├── app.js                  # Core SPA router & application logic
+├── entry.js                # Supreme King Haki entrance animation
+├── problems.js             # DSA problem database (20 problems)
+├── visualizer.js           # Algorithm visualization engine
+├── visualizer_mappings.js  # Line highlight mappings for visualizer
+├── read_content.js         # DSA tutorial content
+└── README.md               # This file
+
 ```
 
-### Backend
+## License
 
-```bash
-cd backend
-npm install
-```
-
----
-
-# 🔑 Environment Variables
-
-## Frontend `.env`
-
-```env
-NEXT_PUBLIC_API_URL=
-NEXT_PUBLIC_FIREBASE_API_KEY=
-NEXT_PUBLIC_RAZORPAY_KEY=
-```
-
----
-
-## Backend `.env`
-
-```env
-PORT=
-MONGO_URI=
-JWT_SECRET=
-REDIS_URL=
-OPENAI_API_KEY=
-RAZORPAY_SECRET=
-```
-
----
-
-# ▶️ Run Development Server
-
-## Frontend
-
-```bash
-npm run dev
-```
-
-## Backend
-
-```bash
-npm run dev
-```
-
----
-
-# 🐳 Docker Setup
-
-```bash
-docker-compose up --build
-```
-
----
-
-# 🔒 Security Features
-
-- JWT Authentication
-- HTTPS Enforcement
-- OWASP Compliance
-- Input Sanitization
-- XSS Protection
-- CSRF Protection
-- Rate Limiting
-- Docker Sandbox Isolation
-
----
-
-# 📱 Responsive Design
-
-VisualDSA is fully optimized for:
-
-- 📱 Mobile
-- 📲 Tablet
-- 💻 Laptop
-- 🖥️ Desktop
-
----
-
-# 🧪 Testing
-
-## Unit Testing
-- Jest
-- React Testing Library
-
-## Integration Testing
-- API Testing
-- Database Testing
-- Authentication Testing
-
-## End-to-End Testing
-- Playwright
-
----
-
-# 🚀 Deployment
-
-| Service | Platform |
-|---------|----------|
-| Frontend | Vercel |
-| Backend | Railway |
-| Database | MongoDB Atlas |
-| Storage | Cloudflare R2 |
-
----
-
-# 📈 Roadmap
-
-- React Native Mobile App
-- AI Voice Tutor
-- Multiplayer Coding Contests
-- Community Discussions
-- Resume Builder
-- AI Interviewer
-- Gamification System
-
----
-
-# 🤝 Contributing
-
-Contributions are welcome!
-
-## Steps to Contribute
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to GitHub
-5. Open a Pull Request
-
----
-
-# 📄 License
-
-This project is licensed under the MIT License.
-
----
-
-# 👨‍💻 Author
-
-Built with ❤️ for developers and students preparing for technical interviews.
-
----
-
-# 🌟 Vision
-
-VisualDSA aims to redefine algorithm learning through:
-
-- Interactive visualizations
-- AI-powered guidance
-- Personalized learning
-- Modern UI/UX
-- Real-world interview preparation
-
----
-
-# ⭐ Support
-
-If you like this project:
-
-- Give it a ⭐ on GitHub
-- Share it with developers
-- Contribute to the project
-
----
-
-# 📬 Contact
-
-For queries, collaborations, or contributions:
-
-📧 support@visualdsa.dev
-
----
-
-## 🚀 “Learn DSA Visually. Practice Intelligently. Crack Interviews Faster.”
+Made with ❤️ by the AlgoJudge Team

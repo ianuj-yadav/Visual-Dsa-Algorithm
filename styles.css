@@ -1,0 +1,1300 @@
+/* Custom Styles & Premium Animations for AlgoJudge Studio */
+
+/* Base Design System Tokens */
+:root {
+  --bg-primary: #080b11;
+  --bg-secondary: #0f1422;
+  --bg-tertiary: #171d30;
+  --border-color: #20293f;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  
+  --accent-purple: #a855f7;
+  --accent-purple-glow: rgba(168, 85, 247, 0.35);
+  
+  --accent-cyan: #06b6d4;
+  --accent-cyan-glow: rgba(6, 182, 212, 0.35);
+
+  --accent-emerald: #10b981;
+  --accent-emerald-glow: rgba(16, 185, 129, 0.35);
+
+  --accent-ruby: #ef4444;
+  --accent-ruby-glow: rgba(239, 68, 68, 0.35);
+
+  --accent-amber: #f59e0b;
+  --accent-amber-glow: rgba(245, 158, 11, 0.35);
+  
+  --font-mono: 'Fira Code', 'Courier New', Courier, monospace;
+}
+
+html.light {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
+  --border-color: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  
+  --accent-purple-glow: rgba(168, 85, 247, 0.15);
+  --accent-cyan-glow: rgba(6, 182, 212, 0.15);
+  --accent-emerald-glow: rgba(16, 185, 129, 0.15);
+  --accent-ruby-glow: rgba(239, 68, 68, 0.15);
+  --accent-amber-glow: rgba(245, 158, 11, 0.15);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Glassmorphism Cards */
+.glass-panel {
+  background: rgba(15, 20, 34, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+html.light .glass-panel {
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+}
+
+/* Premium Card Hover Lift */
+.premium-card {
+  transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+}
+.premium-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  border-color: rgba(168, 85, 247, 0.4);
+  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.3), 0 0 15px var(--accent-purple-glow);
+}
+
+/* Glowing Neon Elements */
+.glow-purple {
+  box-shadow: 0 0 15px var(--accent-purple-glow);
+}
+.glow-cyan {
+  box-shadow: 0 0 15px var(--accent-cyan-glow);
+}
+.glow-emerald {
+  box-shadow: 0 0 15px var(--accent-emerald-glow);
+}
+
+/* Page transitions structure */
+.view-transition {
+  opacity: 0;
+  transform: translateY(12px);
+  filter: blur(4px);
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+}
+.view-transition.active-view {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* Ambient Background Blobs Pulsating Animation */
+@keyframes floatBlob {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(15px, -20px) scale(1.08);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+.ambient-blob-1 {
+  animation: floatBlob 12s infinite ease-in-out;
+}
+.ambient-blob-2 {
+  animation: floatBlob 16s infinite ease-in-out -4s;
+}
+
+/* Editor Styling overrides */
+.editor-line-number {
+  color: var(--text-secondary);
+  text-align: right;
+  padding-right: 1rem;
+  user-select: none;
+  border-right: 1px solid var(--border-color);
+  width: 3rem;
+}
+
+.editor-active-line {
+  background: rgba(168, 85, 247, 0.12) !important;
+  border-left: 3px solid var(--accent-purple) !important;
+  position: relative;
+  transition: background 0.2s ease, border-left 0.2s ease;
+}
+
+.editor-active-line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, rgba(168, 85, 247, 0.08) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Visualizer Dynamic Components */
+.vis-container {
+  min-height: 300px;
+  background: radial-gradient(circle at 50% 50%, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Smooth Pointer Transition */
+.vis-pointer {
+  transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+  transform: translateX(-50%);
+}
+
+.vis-element {
+  transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Node Animations */
+@keyframes nodePulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 var(--accent-cyan-glow);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 10px rgba(6, 182, 212, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(6, 182, 212, 0);
+  }
+}
+
+.vis-node-active {
+  animation: nodePulse 1.2s infinite;
+  border-color: var(--accent-cyan) !important;
+  color: #fff !important;
+  background: rgba(6, 182, 212, 0.25) !important;
+  text-shadow: 0 0 8px rgba(6, 182, 212, 0.6);
+}
+
+@keyframes nodeDone {
+  0% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+.vis-node-done {
+  border-color: var(--accent-emerald) !important;
+  background: rgba(16, 185, 129, 0.25) !important;
+  color: #fff !important;
+  animation: nodeDone 0.3s forwards;
+  text-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+}
+
+/* Bar Chart Array Elements */
+.vis-bar {
+  border-radius: 6px 6px 0 0;
+  transition: height 0.45s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s ease, transform 0.3s ease;
+}
+.vis-bar:hover {
+  transform: scaleY(1.03);
+  filter: brightness(1.1);
+}
+
+/* Stack Animation */
+@keyframes pushStack {
+  from {
+    transform: translateY(-40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.vis-stack-item {
+  animation: pushStack 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Linked List Connections */
+.vis-arrow {
+  position: absolute;
+  height: 2px;
+  background: var(--border-color);
+  transform-origin: left center;
+  transition: all 0.45s ease;
+}
+
+.vis-arrow-reversed {
+  background: var(--accent-purple);
+  box-shadow: 0 0 8px var(--accent-purple-glow);
+}
+
+.vis-arrow::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: -4px;
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 7px solid var(--border-color);
+  transition: border-left-color 0.45s ease;
+}
+
+.vis-arrow-reversed::after {
+  border-left-color: var(--accent-purple);
+}
+
+/* Code highlight syntax colors (simulated) */
+.syntax-keyword { color: #ff7b72; font-weight: 600; }
+.syntax-function { color: #d2a8ff; }
+.syntax-string { color: #a5d6ff; }
+.syntax-comment { color: #8b949e; font-style: italic; }
+.syntax-number { color: #79c0ff; }
+.syntax-variable { color: #ffa657; }
+.syntax-builtin { color: #79c0ff; }
+
+/* Progress rings */
+.progress-ring-circle {
+  transition: stroke-dashoffset 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+/* Confetti Pieces */
+.confetti {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  opacity: 0.8;
+  animation: confettiFall 2.5s ease-out infinite;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(-50px) rotate(0deg) translateX(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(250px) rotate(180deg) translateX(15px);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(500px) rotate(360deg) translateX(-15px);
+    opacity: 0;
+  }
+}
+
+/* Pulse Glow border for visualizer control */
+.pulse-glow {
+  box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.7);
+  animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(168, 85, 247, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(168, 85, 247, 0);
+  }
+}
+
+/* Login Form Page Styling & Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+#login-view input {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#login-view input:focus {
+  border-color: rgba(168, 85, 247, 0.6);
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.25);
+}
+
+/* User Card in sidebar footer */
+.sidebar-user-avatar {
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.3);
+}
+
+.sidebar-user-logout-btn {
+  color: var(--text-secondary);
+  transition: all 0.25s ease;
+}
+
+.sidebar-user-logout-btn:hover {
+  color: var(--accent-ruby);
+  transform: scale(1.15) rotate(5deg);
+}
+
+/* Company Marquee Scrolling Effect */
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.mask-fade-edges {
+  mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+}
+
+/* Company Badge Styling & Hover Effects */
+.company-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgba(15, 20, 34, 0.85);
+  border: 1px solid var(--border-color);
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  user-select: none;
+}
+
+.company-badge:hover {
+  transform: scale(1.06) translateY(-2px);
+  border-color: rgba(168, 85, 247, 0.6);
+  background-color: rgba(23, 29, 48, 0.95);
+  box-shadow: 0 8px 20px rgba(168, 85, 247, 0.2), 0 0 10px rgba(6, 182, 212, 0.15);
+}
+
+.company-badge i {
+  font-size: 0.9rem;
+  transition: transform 0.3s ease;
+}
+
+.company-badge:hover i {
+  transform: scale(1.22);
+}
+
+/* Base transitions for theme switching */
+body, aside, main, header, div, section, article, button, input, select, textarea {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Robust CSS Overrides for Light mode */
+html.light body,
+html.light main,
+html.light section,
+html.light #workspace-view,
+html.light #dashboard-view {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+html.light aside {
+  background-color: var(--bg-secondary) !important;
+  border-color: var(--border-color) !important;
+}
+
+html.light header {
+  background-color: var(--bg-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Cards & panels */
+html.light #user-profile-container > div,
+html.light #problems-list > div,
+html.light .glass-panel,
+html.light #victory-modal > div {
+  background-color: var(--bg-secondary) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Text colors globally */
+html.light p,
+html.light h1,
+html.light h2,
+html.light h3,
+html.light span,
+html.light strong,
+html.light div,
+html.light li,
+html.light a {
+  color: var(--text-primary);
+}
+
+html.light .text-gray-400,
+html.light .text-gray-500,
+html.light .text-gray-600 {
+  color: var(--text-secondary) !important;
+}
+
+html.light button {
+  color: var(--text-primary);
+}
+
+html.light i {
+  color: inherit;
+}
+
+/* Forms inputs */
+html.light input,
+html.light select,
+html.light textarea {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html.light input::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Code editor */
+html.light #code-editor-area,
+html.light #editor-line-numbers {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light .editor-line-number {
+  color: #64748b !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light .editor-active-line {
+  background: rgba(168, 85, 247, 0.06) !important;
+}
+
+/* Workspace Visualizer Canvas overrides */
+html.light #vis-canvas {
+  background: radial-gradient(circle at 50% 50%, #ffffff 0%, #f1f5f9 100%) !important;
+}
+
+html.light #vis-code-tracker > div {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light #tracker-lines-box .text-gray-300 {
+  color: #334155 !important;
+}
+
+/* Sidebar navigation interactions */
+html.light nav a.text-gray-400:hover {
+  background-color: rgba(0, 0, 0, 0.03) !important;
+  color: #000000 !important;
+}
+
+html.light #problems-list > div:hover {
+  background-color: rgba(168, 85, 247, 0.02) !important;
+  border-color: rgba(168, 85, 247, 0.3) !important;
+}
+
+/* Activity Tracker grid overrides for Light Theme */
+html.light .bg-gray-800\/40 {
+  background-color: #e2e8f0 !important;
+}
+html.light .bg-purple-950\/70 { background-color: #f3e8ff !important; }
+html.light .bg-purple-800\/50 { background-color: #e9d5ff !important; }
+html.light .bg-purple-600\/80 { background-color: #d8b4fe !important; }
+html.light .bg-purple-400 { background-color: #c084fc !important; }
+
+
+/* Theme Icon Display toggles */
+.light-icon {
+  display: none;
+}
+.dark-icon {
+  display: block;
+}
+
+html.light .light-icon {
+  display: block !important;
+}
+html.light .dark-icon {
+  display: none !important;
+}
+
+/* Company-specific hover glows */
+.hover\:shadow-red-500\/10:hover {
+  box-shadow: 0 10px 30px rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.25) !important;
+}
+
+.hover\:shadow-blue-500\/10:hover {
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.25) !important;
+}
+
+.hover\:shadow-amber-500\/10:hover {
+  box-shadow: 0 10px 30px rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.25) !important;
+}
+
+.hover\:shadow-cyan-500\/10:hover {
+  box-shadow: 0 10px 30px rgba(6, 182, 212, 0.12);
+  border-color: rgba(6, 182, 212, 0.25) !important;
+}
+
+/* Company Brand Colors & Solved Glow animations */
+.brand-google { color: #ea4335 !important; }
+.brand-meta { color: #1877F2 !important; }
+.brand-amazon { color: #ff9900 !important; }
+.brand-microsoft { color: #00a4ef !important; }
+
+/* Grayscale for unsolved company logos */
+.logo-unsolved {
+  filter: grayscale(1) opacity(0.22) contrast(0.8) !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.logo-solved-glow {
+  filter: none !important;
+  opacity: 1 !important;
+  animation: logoPulseGlow 2.5s infinite ease-in-out;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+@keyframes logoPulseGlow {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 2px currentColor);
+  }
+  50% {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 8px currentColor);
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 2px currentColor);
+  }
+}
+
+/* Light mode overrides for Popular Questions view */
+html.light #popular-problems-grid > div {
+  background-color: var(--bg-secondary) !important;
+  border-color: var(--border-color) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.03) !important;
+}
+
+html.light #popular-problems-grid > div:hover {
+  background-color: #f8fafc !important;
+  border-color: rgba(168, 85, 247, 0.3) !important;
+}
+
+html.light #popular-problems-grid .bg-gray-900 {
+  background-color: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Visualizer Studio Styling Rules */
+.bg-radial-grid {
+  background: radial-gradient(circle at 50% 50%, var(--bg-secondary) 0%, var(--bg-primary) 100%) !important;
+}
+
+#visualizer-studio-view select {
+  transition: all 0.25s ease-in-out;
+}
+
+#visualizer-studio-view select:focus {
+  border-color: rgba(6, 182, 212, 0.5);
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
+}
+
+/* Light mode overrides for Visualizer Studio */
+html.light #visualizer-studio-view h1,
+html.light #visualizer-studio-view h3,
+html.light #visualizer-studio-view label,
+html.light #visualizer-studio-view span {
+  color: var(--text-primary) !important;
+}
+
+html.light #studio-vis-canvas {
+  background: radial-gradient(circle at 50% 50%, #ffffff 0%, #f1f5f9 100%) !important;
+}
+
+html.light #visualizer-studio-view .glass-panel {
+  background-color: var(--bg-secondary) !important;
+  border-color: var(--border-color) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.03) !important;
+}
+
+html.light #studio-code-tracker {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light #studio-code-tracker > div:first-child {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light #studio-code-lines {
+  background-color: #ffffff !important;
+}
+
+html.light #studio-tracker-lines-box .text-gray-300 {
+  color: #334155 !important;
+}
+
+html.light #visualizer-studio-view button {
+  color: var(--text-primary);
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light #visualizer-studio-view button:hover {
+  background-color: #e2e8f0 !important;
+}
+
+html.light #btn-studio-play {
+  color: #ffffff !important;
+  background-color: #a855f7 !important;
+  border-color: #a855f7 !important;
+}
+html.light #btn-studio-play:hover {
+  background-color: #9333ea !important;
+}
+
+/* ==================== SOFTWARE ENGINEERING TIMELINE STYLES ==================== */
+.timeline-card {
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.timeline-card.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.timeline-checkpoint {
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+  background-color: var(--bg-primary);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.timeline-checkpoint.checkpoint-active {
+  border-color: var(--accent-purple) !important;
+  color: #ffffff !important;
+  background-color: #1e1b4b !important;
+  box-shadow: 0 0 14px rgba(168, 85, 247, 0.7), inset 0 0 8px rgba(168, 85, 247, 0.25);
+}
+
+/* Light Mode Overrides for Timeline */
+html.light .timeline-card {
+  background-color: var(--bg-secondary) !important;
+  border-color: var(--border-color) !important;
+}
+
+html.light .timeline-card h3 {
+  color: #0f172a !important;
+}
+
+html.light .timeline-card p {
+  color: #475569 !important;
+}
+
+html.light #home-view h1,
+html.light #home-view h2 {
+  color: #0f172a !important;
+}
+
+html.light #home-view p {
+  color: #475569 !important;
+}
+
+html.light #home-view .absolute.left-6.md\:left-12 {
+  background-color: #cbd5e1 !important;
+}
+
+html.light .timeline-checkpoint {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #64748b !important;
+}
+
+html.light .timeline-checkpoint.checkpoint-active {
+  background-color: #f3e8ff !important;
+  border-color: var(--accent-purple) !important;
+  color: var(--accent-purple) !important;
+  box-shadow: 0 0 14px rgba(168, 85, 247, 0.4), inset 0 0 8px rgba(168, 85, 247, 0.1) !important;
+}
+
+/* Light mode specific colors for timeline icons & badges */
+html.light .timeline-card .text-rose-400 {
+  color: #e11d48 !important;
+}
+html.light .timeline-card .bg-rose-950\/20 {
+  background-color: #ffe4e6 !important;
+  border-color: #fecdd3 !important;
+}
+html.light .timeline-card .bg-rose-950\/40 {
+  background-color: #fff1f2 !important;
+  border-color: #fda4af !important;
+  color: #e11d48 !important;
+}
+
+html.light .timeline-card .text-cyan-400 {
+  color: #0891b2 !important;
+}
+html.light .timeline-card .bg-cyan-950\/20 {
+  background-color: #ecfeff !important;
+  border-color: #cffafe !important;
+}
+html.light .timeline-card .bg-cyan-950\/40 {
+  background-color: #ecfeff !important;
+  border-color: #67e8f9 !important;
+  color: #0891b2 !important;
+}
+
+html.light .timeline-card .text-amber-500 {
+  color: #d97706 !important;
+}
+html.light .timeline-card .bg-amber-950\/20 {
+  background-color: #fef3c7 !important;
+  border-color: #fde68a !important;
+}
+html.light .timeline-card .bg-amber-950\/40 {
+  background-color: #fffbeb !important;
+  border-color: #fcd34d !important;
+  color: #d97706 !important;
+}
+
+html.light .timeline-card .text-purple-400 {
+  color: #9333ea !important;
+}
+html.light .timeline-card .bg-purple-950\/20 {
+  background-color: #faf5ff !important;
+  border-color: #f3e8ff !important;
+}
+html.light .timeline-card .bg-purple-950\/40 {
+  background-color: #faf5ff !important;
+  border-color: #d8b4fe !important;
+  color: #9333ea !important;
+}
+
+
+
+/* Light mode overrides for Login/Signup view background wallpaper */
+html.light #login-view {
+  background-color: #e8f5e9 !important; /* Soft premium green wallpaper background */
+}
+html.light #login-view .rounded-full {
+  background-color: rgba(16, 185, 129, 0.15) !important; /* Soft emerald glowing blobs */
+}
+
+/* ==================== PROFESSIONAL POLISH ENHANCEMENTS ==================== */
+
+/* 1. Typography & Rendering — crisp anti-aliased text everywhere */
+*, *::before, *::after {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* 2. Subtle noise texture overlay for depth — gives a premium matte feel */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.018;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+html.light body::before {
+  opacity: 0.03;
+}
+
+/* 3. Enhanced glassmorphism cards with layered depth */
+.glass-panel {
+  background: rgba(15, 20, 34, 0.65);
+  backdrop-filter: blur(20px) saturate(1.3);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.15),
+    0 4px 16px rgba(0, 0, 0, 0.12),
+    0 12px 48px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+html.light .glass-panel {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.03),
+    0 4px 16px rgba(0, 0, 0, 0.02),
+    0 12px 48px rgba(0, 0, 0, 0.01);
+}
+
+/* 4. Premium button refinement with depth and smooth press effect */
+button, [type="submit"] {
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Primary purple buttons — polished gradient with inner highlight */
+.bg-purple-600,
+[class*="bg-purple-600"] {
+  background: linear-gradient(180deg, #b06cf9 0%, #a855f7 30%, #9333ea 100%) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.12) inset,
+    0 2px 8px rgba(168, 85, 247, 0.35),
+    0 6px 20px rgba(168, 85, 247, 0.15);
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+.bg-purple-600:hover,
+[class*="bg-purple-600"]:hover {
+  background: linear-gradient(180deg, #c084fc 0%, #b06cf9 30%, #a855f7 100%) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.15) inset,
+    0 4px 12px rgba(168, 85, 247, 0.45),
+    0 8px 28px rgba(168, 85, 247, 0.2);
+  transform: translateY(-1px);
+}
+.bg-purple-600:active,
+[class*="bg-purple-600"]:active {
+  transform: translateY(0.5px) scale(0.99);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 1px 4px rgba(168, 85, 247, 0.3);
+  transition-duration: 0.08s !important;
+}
+
+/* 5. Accessible focus rings — keyboard-friendly with visible outline */
+*:focus-visible {
+  outline: 2px solid var(--accent-purple);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid rgba(168, 85, 247, 0.5);
+  outline-offset: 0;
+  box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.12);
+}
+
+/* 6. Sidebar refinements — clean divider line and subtle inner glow */
+#sidebar-nav {
+  background: linear-gradient(180deg, #161b22 0%, #131820 100%);
+  box-shadow: 1px 0 0 rgba(255, 255, 255, 0.03);
+}
+html.light #sidebar-nav {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow: 1px 0 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Sidebar navigation hover with smooth left-accent reveal */
+#sidebar-nav nav a {
+  position: relative;
+  overflow: hidden;
+}
+#sidebar-nav nav a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) scaleY(0);
+  width: 3px;
+  height: 60%;
+  border-radius: 0 4px 4px 0;
+  background: var(--accent-purple);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+#sidebar-nav nav a:hover::before {
+  transform: translateY(-50%) scaleY(1);
+}
+/* Active sidebar link accent bar */
+#sidebar-nav nav a[class*="bg-purple"]::before {
+  transform: translateY(-50%) scaleY(1);
+  box-shadow: 0 0 8px var(--accent-purple-glow);
+}
+
+/* 7. Top header bar — refined with subtle bottom shadow line */
+header {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03), 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+html.light header {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+/* 8. Problem cards — refined hover interaction */
+#problems-list > div {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+#problems-list > div::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(168, 85, 247, 0.04), transparent 40%);
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+#problems-list > div:hover::after {
+  opacity: 1;
+}
+
+/* 9. Smooth selection highlight */
+::selection {
+  background: rgba(168, 85, 247, 0.3);
+  color: #fff;
+}
+html.light ::selection {
+  background: rgba(168, 85, 247, 0.2);
+  color: #0f172a;
+}
+
+/* 10. Code editor area — refined monospace appearance */
+#code-editor-area {
+  font-feature-settings: "liga" 1, "calt" 1;
+  line-height: 1.65;
+  tab-size: 4;
+  letter-spacing: 0.01em;
+}
+
+/* 11. Premium badges/tags glow on hover */
+[class*="text-emerald-400"][class*="bg-emerald-"],
+[class*="text-cyan-400"][class*="bg-cyan-"],
+[class*="text-purple-400"][class*="bg-purple-"],
+[class*="text-amber-"][class*="bg-amber-"],
+[class*="text-rose-400"][class*="bg-rose-"] {
+  transition: all 0.25s ease;
+}
+[class*="text-emerald-400"][class*="bg-emerald-"]:hover {
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
+}
+[class*="text-cyan-400"][class*="bg-cyan-"]:hover {
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.25);
+}
+
+/* 12. Improved input field styling — taller, sleeker feel */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+  height: 2.75rem;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+input[type="text"]:hover,
+input[type="email"]:hover,
+input[type="password"]:hover,
+select:hover {
+  border-color: rgba(148, 163, 184, 0.3);
+}
+
+/* 13. Smooth page entry animation — refined fade+slide */
+.view-transition {
+  opacity: 0;
+  transform: translateY(8px);
+  filter: blur(2px);
+  transition:
+    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.5s ease;
+}
+.view-transition.active-view {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* 14. Victory modal refined entrance */
+#victory-modal > div:last-child {
+  animation: victoryPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes victoryPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.85) translateY(20px);
+    filter: blur(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* 15. Login form card — elevated entrance animation */
+#login-view .glass-panel {
+  animation: loginCardReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.1s;
+  opacity: 0;
+}
+@keyframes loginCardReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* 16. Daily challenge banner — shimmer highlight */
+[class*="bg-gradient-to-r"][class*="from-purple-950"] {
+  position: relative;
+  overflow: hidden;
+}
+[class*="bg-gradient-to-r"][class*="from-purple-950"]::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+  animation: bannerShimmer 4s infinite;
+  pointer-events: none;
+}
+@keyframes bannerShimmer {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+/* 17. Sidebar avatar glow ring pulse */
+.sidebar-user-avatar {
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4);
+  animation: avatarPulse 3s infinite ease-in-out;
+}
+@keyframes avatarPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4); }
+  50% { box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.1); }
+}
+
+/* 18. Tooltips for icon buttons */
+[title] {
+  position: relative;
+}
+
+/* 19. Loading shimmer for dynamic content placeholders */
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.loading-shimmer {
+  background: linear-gradient(90deg, var(--bg-secondary) 0%, var(--bg-tertiary) 50%, var(--bg-secondary) 100%);
+  background-size: 800px 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+/* 20. Smooth number counter transitions */
+[id*="stat-"],
+[id*="analytics-"],
+[id*="header-user-points"] {
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 21. Premium progress bar with inner shine */
+[class*="bg-purple-500"][class*="h-1"] {
+  background: linear-gradient(90deg, #9333ea, #a855f7, #c084fc) !important;
+  box-shadow: 0 0 8px rgba(168, 85, 247, 0.4);
+  position: relative;
+}
+
+/* 22. Refined console/terminal feel */
+#console-output {
+  font-feature-settings: "liga" 1, "calt" 1;
+  letter-spacing: 0.02em;
+  line-height: 1.7;
+}
+
+/* 23. Smooth scroll behaviour for scrollable views */
+.overflow-y-auto,
+.overflow-x-auto {
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+}
+
+/* 24. Enhanced category filter pills */
+#category-filters button {
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+#category-filters button:hover {
+  transform: translateY(-1px);
+}
+#category-filters button:active {
+  transform: translateY(0.5px);
+}
+
+/* 25. Visualizer canvas container — subtle inner glow */
+.vis-container {
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.15);
+}
+html.light .vis-container {
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.03);
+}
+
+/* ==================== PROFILE VIEW STYLES ==================== */
+#sidebar-profile-card {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+#sidebar-profile-card:hover {
+  background-color: rgba(147, 51, 234, 0.08) !important;
+  border-color: rgba(147, 51, 234, 0.3) !important;
+  box-shadow: 0 0 12px rgba(147, 51, 234, 0.08);
+}
+html.light #sidebar-profile-card:hover {
+  background-color: rgba(147, 51, 234, 0.04) !important;
+  border-color: rgba(147, 51, 234, 0.2) !important;
+}
+
+.profile-badge {
+  font-family: 'Fira Code', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+.profile-badge-purple {
+  background-color: rgba(168, 85, 247, 0.1);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  color: #c084fc;
+}
+
+.profile-badge-cyan {
+  background-color: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.25);
+  color: #22d3ee;
+}
+
+.profile-badge-emerald {
+  background-color: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  color: #34d399;
+}
+
+.code-accordion {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.accordion-chevron {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.accordion-chevron.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.code-accordion-header {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+
+.code-accordion-header:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+html.light .code-accordion-header:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.code-accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.code-accordion-content.expanded {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+/* Code content custom scrollbar */
+.code-accordion-content::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.code-accordion-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+.code-accordion-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+.code-accordion-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Light mode overrides for profile page elements */
+html.light .profile-view-text-white {
+  color: #0f172a !important;
+}
+html.light .profile-view-text-gray {
+  color: #475569 !important;
+}
+html.light .profile-view-card {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+html.light .profile-view-subcard {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}

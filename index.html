@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AlgoJudge — A premium interactive DSA coding studio with algorithm visualizers, multi-language compilation, and structured interview preparation.">
+  <meta name="theme-color" content="#0d1117">
+  <title>AlgoJudge — Interactive DSA Studio & Algorithm Visualizer</title>
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect rx=%2216%22 width=%22100%22 height=%22100%22 fill=%22%239333ea%22/><text x=%2250%22 y=%2268%22 font-size=%2256%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22monospace%22 font-weight=%22bold%22>A</text></svg>" type="image/svg+xml">
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts (Inter & Fira Code) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Custom Styling overrides -->
+  <link rel="stylesheet" href="styles.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['Fira Code', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-[#0d1117] text-gray-100 font-sans h-full flex overflow-hidden">
+
+  <!-- ==================== LOGIN VIEW ==================== -->
+  <section id="login-view"
+    class="hidden w-full h-full flex items-center justify-center bg-[#0d1117] relative overflow-y-auto py-12 px-4 z-50">
+    <canvas id="login-matrix-canvas" class="absolute inset-0 pointer-events-none z-0 opacity-[0.22]"></canvas>
+    <!-- Floating login page theme switcher -->
+    <div class="absolute top-6 right-6 z-50">
+      <button id="login-theme-toggle"
+        class="w-10 h-10 rounded-xl bg-[#161b22]/70 backdrop-blur-md border border-[#30363d] text-gray-400 hover:text-white transition-all flex items-center justify-center cursor-pointer shadow-lg hover:scale-105"
+        title="Toggle Light/Dark Theme">
+        <i class="fas fa-sun text-sm light-icon"></i>
+        <i class="fas fa-moon text-sm dark-icon"></i>
+      </button>
+    </div>
+    <!-- Abstract gradient background blobs -->
+    <div
+      class="absolute w-[400px] h-[400px] rounded-full bg-purple-600/10 blur-[100px] -top-20 -left-20 pointer-events-none">
+    </div>
+    <div
+      class="absolute w-[400px] h-[400px] rounded-full bg-cyan-500/10 blur-[100px] -bottom-20 -right-20 pointer-events-none">
+    </div>
+
+    <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-8 items-center relative z-10">
+
+      <!-- LEFT COLUMN: Intro & Company Ticker -->
+      <div class="hidden md:flex md:col-span-7 flex-col gap-6 text-left pr-6">
+        <div class="flex items-center gap-2">
+          <span
+            class="text-xs text-purple-400 font-bold tracking-widest uppercase font-mono bg-purple-950/40 border border-purple-500/20 px-2.5 py-1 rounded-lg">AlgoJudge
+            ✦</span>
+        </div>
+        <h2 class="text-4xl font-extrabold leading-tight text-white tracking-tight">
+          Master your next <br>
+          <span
+            class="bg-gradient-to-r from-purple-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">technical
+            interview</span>
+        </h2>
+        <p class="text-gray-400 text-sm leading-relaxed max-w-md">
+          Practice data structures and algorithms in an immersive environment. Visualize compilation steps, track
+          variable scopes, and analyze complexity in real time.
+        </p>
+
+        <!-- Bullet Features -->
+        <div class="flex flex-col gap-3.5 mt-2">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-8 h-8 rounded-lg bg-purple-950/40 border border-purple-500/30 flex items-center justify-center text-purple-400">
+              <i class="fas fa-play text-xs"></i></div>
+            <div class="text-xs text-gray-300"><strong class="text-white">Interactive Visualizer:</strong> Step through
+              sorting, trees, arrays & graphs.</div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div
+              class="w-8 h-8 rounded-lg bg-cyan-950/40 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+              <i class="fas fa-terminal text-xs"></i></div>
+            <div class="text-xs text-gray-300"><strong class="text-white">Multi-language Compiler:</strong> Write and
+              submit code in Python, JS, C++, or Java.</div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div
+              class="w-8 h-8 rounded-lg bg-emerald-950/40 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+              <i class="fas fa-chart-line text-xs"></i></div>
+            <div class="text-xs text-gray-300"><strong class="text-white">Detailed Diagnostics:</strong> Profile
+              runtimes and memory allocations instantly.</div>
+          </div>
+        </div>
+
+        <!-- Scrolling Companies marquee -->
+        <div class="flex flex-col gap-2.5 mt-4 pt-6 border-t border-[#30363d] max-w-lg">
+          <span class="text-[10px] uppercase font-mono tracking-widest text-gray-500 font-bold">Targeted by top
+            engineering firms:</span>
+          <div class="relative w-full overflow-hidden mask-fade-edges py-2">
+            <div class="animate-marquee flex gap-3">
+              <div class="company-badge"><i class="fab fa-google text-[#4285F4]"></i> Google</div>
+              <div class="company-badge"><i class="fab fa-facebook text-[#1877F2]"></i> Meta</div>
+              <div class="company-badge"><i class="fab fa-amazon text-[#FF9900]"></i> Amazon</div>
+              <div class="company-badge"><i class="fab fa-windows text-[#00A4EF]"></i> Microsoft</div>
+              <div class="company-badge"><i class="fab fa-apple text-white"></i> Apple</div>
+              <div class="company-badge"><i class="fab fa-uber text-white"></i> Uber</div>
+              <div class="company-badge"><i class="fab fa-stripe text-[#635BFF]"></i> Stripe</div>
+
+              <!-- Duplicated list for seamless scrolling loop -->
+              <div class="company-badge"><i class="fab fa-google text-[#4285F4]"></i> Google</div>
+              <div class="company-badge"><i class="fab fa-facebook text-[#1877F2]"></i> Meta</div>
+              <div class="company-badge"><i class="fab fa-amazon text-[#FF9900]"></i> Amazon</div>
+              <div class="company-badge"><i class="fab fa-windows text-[#00A4EF]"></i> Microsoft</div>
+              <div class="company-badge"><i class="fab fa-apple text-white"></i> Apple</div>
+              <div class="company-badge"><i class="fab fa-uber text-white"></i> Uber</div>
+              <div class="company-badge"><i class="fab fa-stripe text-[#635BFF]"></i> Stripe</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Login card form -->
+      <div class="md:col-span-5 w-full flex justify-center">
+        <div
+          class="w-full max-w-md bg-[#161b22]/70 backdrop-blur-md border border-[#30363d] rounded-2xl p-8 shadow-2xl glass-panel glow-purple animate-fade-in relative">
+          <!-- App Brand header -->
+          <div class="flex flex-col items-center mb-8">
+            <div
+              class="w-12 h-12 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-500 flex items-center justify-center text-white shadow-md glow-purple mb-3">
+              <i class="fas fa-terminal text-lg"></i>
+            </div>
+            <h1
+              class="text-2xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-purple-400 bg-clip-text text-transparent">
+              AlgoJudge</h1>
+            <p class="text-xs text-gray-500 font-mono mt-1">THE INTERACTIVE DSA STUDIO</p>
+          </div>
+
+          <!-- Tab selection -->
+          <div class="flex border-b border-[#30363d] mb-6">
+            <button id="login-tab-signin"
+              class="flex-1 pb-3 text-sm font-bold text-center border-b-2 border-purple-500 text-purple-400 transition-all cursor-pointer">
+              Sign In
+            </button>
+            <button id="login-tab-signup"
+              class="flex-1 pb-3 text-sm font-semibold text-center border-b-2 border-transparent text-gray-500 hover:text-gray-300 transition-all cursor-pointer">
+              Register
+            </button>
+          </div>
+
+          <!-- Form error box -->
+          <div id="login-error-msg"
+            class="hidden mb-4 p-3 rounded-lg bg-red-950/40 border border-red-500/20 text-red-400 text-xs font-medium flex items-center gap-2">
+            <i class="fas fa-exclamation-circle text-sm flex-shrink-0"></i>
+            <span class="error-text">Invalid credentials. Please try again.</span>
+          </div>
+
+          <!-- SIGN IN FORM -->
+          <form id="signin-form" class="flex flex-col gap-4">
+            <div class="flex flex-col gap-1.5">
+              <label class="text-xs text-gray-400 font-semibold tracking-wide">Email or Username</label>
+              <div class="relative">
+                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs"><i
+                    class="fas fa-envelope"></i></span>
+                <input type="text" id="signin-username" required placeholder="name@dsa.com"
+                  class="w-full bg-[#0d1117] border border-[#30363d] focus:border-purple-500/50 rounded-xl pl-10 pr-4 py-2.5 text-sm text-gray-200 placeholder-gray-600 outline-none transition-all focus:ring-1 focus:ring-purple-500/20">
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <div class="flex justify-between items-center">
+                <label class="text-xs text-gray-400 font-semibold tracking-wide">Password</label>
+                <a href="#" class="text-[10px] text-purple-400 hover:underline">Forgot password?</a>
+              </div>
+              <div class="relative">
+                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs"><i
+                    class="fas fa-lock"></i></span>
+                <input type="password" id="signin-password" required placeholder="••••••••"
+                  class="w-full bg-[#0d1117] border border-[#30363d] focus:border-purple-500/50 rounded-xl pl-10 pr-4 py-2.5 text-sm text-gray-200 placeholder-gray-600 outline-none transition-all focus:ring-1 focus:ring-purple-500/20">
+              </div>
+            </div>
+
+            <button type="submit"
+              class="w-full py-3 mt-2 rounded-xl bg-purple-600 border border-purple-500 hover:bg-purple-500 text-white font-bold text-sm shadow-md glow-purple transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer">
+              Sign In
+            </button>
+          </form>
+
+          <!-- SIGN UP FORM -->
+          <form id="signup-form" class="hidden flex flex-col gap-4">
+            <div class="flex flex-col gap-1.5">
+              <label class="text-xs text-gray-400 font-semibold tracking-wide">Full Name</label>
+              <div class="relative">
+                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs"><i
+                    class="fas fa-user"></i></span>
+                <input type="text" id="signup-name" required placeholder="John Doe"
+                  class="w-full bg-[#0d1117] border border-[#30363d] focus:border-purple-500/50 rounded-xl pl-10 pr-4 py-2.5 text-sm text-gray-200 placeholder-gray-600 outline-none transition-all focus:ring-1 focus:ring-purple-500/20">
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <label class="text-xs text-gray-400 font-semibold tracking-wide">Email Address</label>
+              <div class="relative">
+                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs"><i
+                    class="fas fa-envelope"></i></span>
+                <input type="email" id="signup-email" required placeholder="name@dsa.com"
+                  class="w-full bg-[#0d1117] border border-[#30363d] focus:border-purple-500/50 rounded-xl pl-10 pr-4 py-2.5 text-sm text-gray-200 placeholder-gray-600 outline-none transition-all focus:ring-1 focus:ring-purple-500/20">
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <label class="text-xs text-gray-400 font-semibold tracking-wide">Password</label>
+              <div class="relative">
+                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs"><i
+                    class="fas fa-lock"></i></span>
+                <input type="password" id="signup-password" required placeholder="••••••••"
+                  class="w-full bg-[#0d1117] border border-[#30363d] focus:border-purple-500/50 rounded-xl pl-10 pr-4 py-2.5 text-sm text-gray-200 placeholder-gray-600 outline-none transition-all focus:ring-1 focus:ring-purple-500/20">
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <label class="text-xs text-gray-400 font-semibold tracking-wide">Confirm Password</label>
+              <div class="relative">
+                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs"><i
+                    class="fas fa-lock"></i></span>
+                <input type="password" id="signup-confirm-password" required placeholder="••••••••"
+                  class="w-full bg-[#0d1117] border border-[#30363d] focus:border-purple-500/50 rounded-xl pl-10 pr-4 py-2.5 text-sm text-gray-200 placeholder-gray-600 outline-none transition-all focus:ring-1 focus:ring-purple-500/20">
+              </div>
+            </div>
+
+            <button type="submit"
+              class="w-full py-3 mt-2 rounded-xl bg-purple-600 border border-purple-500 hover:bg-purple-500 text-white font-bold text-sm shadow-md glow-purple transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer">
+              Create Account
+            </button>
+          </form>
+
+          <!-- Divider line -->
+          <div class="relative flex py-5 items-center">
+            <div class="flex-grow border-t border-[#30363d]"></div>
+            <span class="flex-shrink mx-4 text-gray-600 text-[10px] uppercase font-mono tracking-wider">or</span>
+            <div class="flex-grow border-t border-[#30363d]"></div>
+          </div>
+
+          <!-- Quick logs links -->
+          <div class="flex flex-col gap-2.5">
+            <button id="btn-demo-login"
+              class="w-full py-2.5 rounded-xl bg-gray-900 border border-gray-800 hover:bg-gray-800 hover:border-gray-700 text-purple-400 hover:text-purple-300 font-semibold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer">
+              <i class="fas fa-user-shield"></i> Sign In as Demo User
+            </button>
+            <button id="btn-guest-login"
+              class="w-full py-2.5 rounded-xl bg-transparent border border-dashed border-gray-800 hover:border-gray-600 hover:bg-gray-800/10 text-gray-400 hover:text-gray-300 font-semibold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer">
+              <i class="fas fa-user-secret"></i> Continue as Guest
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Sidebar Navigation -->
+  <aside id="sidebar-nav"
+    class="hidden w-64 bg-[#161b22] border-r border-[#30363d] flex flex-col justify-between h-full z-20">
+    <div class="flex flex-col">
+      <!-- Logo Header -->
+      <a href="#" id="sidebar-logo-link"
+        class="h-16 flex items-center px-6 border-b border-[#30363d] gap-2.5 hover:opacity-90 transition-all cursor-pointer">
+        <div
+          class="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-600 to-cyan-500 flex items-center justify-center text-white shadow-md glow-purple">
+          <i class="fas fa-terminal text-xs"></i>
+        </div>
+        <span
+          class="text-lg font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-purple-400 bg-clip-text text-transparent">AlgoJudge
+          <span class="text-xs text-cyan-400 font-bold ml-1 font-mono">✦</span></span>
+      </a>
+
+      <!-- Nav Lists -->
+      <nav class="p-4 flex flex-col gap-1.5 mt-4">
+        <a href="#" id="nav-link-home"
+          class="flex items-center gap-3.5 px-4 py-3 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 font-medium text-sm transition-all duration-300">
+          <i class="fas fa-home text-sm"></i> Home Page
+        </a>
+        <a href="#" id="nav-link-dashboard"
+          class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-gray-400 hover:text-gray-200 hover:bg-gray-800/40 border border-transparent hover:border-gray-800 font-medium text-sm transition-all duration-300">
+          <i class="fas fa-th-large text-sm"></i> Dashboard
+        </a>
+        <a href="#" id="nav-link-problems"
+          class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-gray-400 hover:text-gray-200 hover:bg-gray-800/40 border border-transparent hover:border-gray-800 font-medium text-sm transition-all duration-300">
+          <i class="fas fa-code text-sm"></i> Problems List
+        </a>
+        <a href="#" id="nav-link-visualizer"
+          class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-gray-400 hover:text-gray-200 hover:bg-gray-800/40 border border-transparent hover:border-gray-800 font-medium text-sm transition-all duration-300">
+          <i class="fas fa-project-diagram text-sm text-cyan-400"></i> Visualizer Studio
+          <span
+            class="text-[9px] bg-cyan-950 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded font-mono font-bold uppercase tracking-wider ml-auto">LIVE</span>
+        </a>
+        <a href="#" id="nav-link-analytics"
+          class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-gray-400 hover:text-gray-200 hover:bg-gray-800/40 border border-transparent hover:border-gray-800 font-medium text-sm transition-all duration-300">
+          <i class="fas fa-chart-line text-sm"></i> Analytics
+        </a>
+        <a href="#" id="nav-link-popular"
+          class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-gray-400 hover:text-gray-200 hover:bg-gray-800/40 border border-transparent hover:border-gray-800 font-medium text-sm transition-all duration-300">
+          <i class="fas fa-fire text-sm text-amber-500"></i> Popular DSA Questions
+          <span
+            class="text-[9px] bg-purple-950 text-purple-400 border border-purple-500/20 px-1.5 py-0.5 rounded font-mono font-bold uppercase tracking-wider ml-auto">HOT</span>
+        </a>
+        <a href="#" id="nav-link-read"
+          class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-gray-400 hover:text-gray-200 hover:bg-gray-800/40 border border-transparent hover:border-gray-800 font-medium text-sm transition-all duration-300">
+          <i class="fas fa-book-open text-sm text-emerald-400"></i> Read DSA Tutorials
+        </a>
+        <a href="#" id="nav-link-discuss"
+          class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-gray-400 hover:text-gray-200 hover:bg-gray-800/40 border border-transparent hover:border-gray-800 font-medium text-sm transition-all duration-300">
+          <i class="fas fa-comments text-sm text-rose-400"></i> Discuss Community
+        </a>
+      </nav>
+    </div>
+
+    <!-- User Profile Card in Sidebar footer -->
+    <div id="user-profile-container" class="p-4 border-t border-[#30363d]">
+      <!-- Will be dynamically populated by app.js -->
+    </div>
+  </aside>
+
+  <!-- Main Content Grid -->
+  <main id="main-content" class="hidden flex-1 flex flex-col h-full overflow-hidden relative">
+
+    <!-- Top Nav Header -->
+    <header class="h-16 border-b border-[#30363d] flex items-center justify-between px-8 bg-[#0d1117] z-10">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span class="text-xs text-gray-500 font-semibold font-mono">JUDGE ONLINE & READY</span>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <div
+          class="flex items-center gap-1.5 text-xs text-gray-400 bg-gray-900 border border-gray-800 px-3 py-1.5 rounded-lg">
+          <i class="fas fa-trophy text-amber-500"></i> Points: <strong id="header-user-points"
+            class="text-white">0</strong>
+        </div>
+        <button id="theme-toggle-btn"
+          class="w-8 h-8 rounded-lg border border-gray-800 hover:bg-gray-800 hover:text-white transition-all flex items-center justify-center text-gray-400 cursor-pointer"
+          title="Toggle Light/Dark Theme">
+          <i class="fas fa-sun text-xs light-icon"></i>
+          <i class="fas fa-moon text-xs dark-icon"></i>
+        </button>
+        <button
+          class="w-8 h-8 rounded-lg border border-gray-800 hover:bg-gray-800 hover:text-white transition-all flex items-center justify-center text-gray-400">
+          <i class="fas fa-bell text-xs"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Content Workspace Views -->
+    <div class="flex-grow overflow-y-auto relative">
+
+      <!-- ==================== HOME VIEW ==================== -->
+      <section id="home-view" class="view-transition p-8 max-w-5xl mx-auto flex flex-col gap-12 h-full overflow-y-auto relative">
+        <!-- Ambient background glow blobs -->
+        <div
+          class="absolute w-[300px] h-[300px] rounded-full bg-purple-600/5 blur-[80px] -top-10 -left-10 pointer-events-none">
+        </div>
+        <div
+          class="absolute w-[300px] h-[300px] rounded-full bg-cyan-500/5 blur-[80px] -bottom-10 -right-10 pointer-events-none">
+        </div>
+
+        <!-- Hero Section -->
+        <div class="flex flex-col items-center text-center gap-4 py-8 border-b border-[#30363d]/50 relative z-10">
+          <div class="flex items-center gap-2">
+            <span
+              class="text-xs text-purple-400 font-bold tracking-widest uppercase font-mono bg-purple-950/40 border border-purple-500/20 px-2.5 py-1 rounded-lg">AlgoJudge
+              Studio ✦</span>
+          </div>
+          <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-tight mt-2 max-w-2xl">
+            Cracking Coding Interviews <br>
+            <span
+              class="bg-gradient-to-r from-purple-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">Done
+              Right</span>
+          </h1>
+          <p class="text-gray-400 text-sm max-w-md mt-1 leading-relaxed">
+            Practice structural algorithms, visualize state steps, and understand execution logic inside a modern,
+            immersive workspace.
+          </p>
+          <div class="flex flex-wrap items-center justify-center gap-4 mt-6">
+            <button id="btn-home-dashboard"
+              class="px-5 py-3 rounded-xl bg-purple-600 border border-purple-500 hover:bg-purple-500 text-white font-bold text-sm shadow-md glow-purple hover:scale-102 transition-all cursor-pointer">
+              Go to Dashboard <i class="fas fa-th-large ml-1.5 text-xs"></i>
+            </button>
+            <button id="btn-home-visualizer"
+              class="px-5 py-3 rounded-xl bg-gray-900 border border-gray-800 hover:bg-gray-800 text-cyan-400 hover:text-cyan-300 font-bold text-sm shadow-md transition-all cursor-pointer">
+              Visualizer Studio <i class="fas fa-project-diagram ml-1.5 text-xs"></i>
+            </button>
+            <button id="btn-home-read"
+              class="px-5 py-3 rounded-xl bg-gray-900 border border-gray-800 hover:bg-gray-800 text-emerald-400 hover:text-emerald-300 font-bold text-sm shadow-md transition-all cursor-pointer">
+              Read Tutorials <i class="fas fa-book-open ml-1.5 text-xs"></i>
+            </button>
+            <button id="btn-home-discuss"
+              class="px-5 py-3 rounded-xl bg-gray-900 border border-gray-800 hover:bg-gray-800 text-rose-400 hover:text-rose-300 font-bold text-sm shadow-md transition-all cursor-pointer">
+              Discuss Community <i class="fas fa-comments ml-1.5 text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Software Engineering Timeline Section -->
+        <div class="flex flex-col gap-8 relative z-10 pb-16">
+          <div class="text-center md:text-left flex flex-col items-center md:items-start gap-1">
+            <h2 class="text-2xl font-extrabold text-white tracking-tight">Why Master Data Structures & Algorithms?</h2>
+            <p class="text-gray-500 text-xs font-mono uppercase tracking-wider mt-1">Scroll down to see the real impact of learning DSA</p>
+          </div>
+
+          <!-- Timeline Container -->
+          <div class="flex items-stretch gap-6 relative pl-4 md:pl-10 mt-6 min-h-[600px]">
+            <!-- Vertical Pipeline Line -->
+            <div class="absolute left-6 md:left-12 top-0 bottom-0 w-[4px] bg-gray-800/60 rounded-full">
+              <div id="timeline-progress-line"
+                class="w-full bg-gradient-to-b from-purple-500 via-cyan-500 to-emerald-500 rounded-full shadow-[0_0_12px_#a855f7] transition-all duration-300 ease-out"
+                style="height: 0%;"></div>
+            </div>
+
+            <!-- Steps wrapper -->
+            <div class="flex flex-col gap-16 w-full relative z-10 pl-8">
+
+              <!-- STEP 1: CAREER -->
+              <div class="flex flex-col gap-3 relative">
+                <!-- Checkpoint Dot -->
+                <div
+                  class="timeline-checkpoint absolute -left-[45px] top-1.5 w-6 h-6 rounded-full border border-gray-700 bg-[#0d1117] flex items-center justify-center text-[10px] text-gray-500 font-mono font-bold transition-all duration-300">
+                  1
+                </div>
+                <!-- Content Card -->
+                <div
+                  class="timeline-card glass-panel premium-card border border-[#30363d] rounded-2xl p-6 flex flex-col gap-3 transition-all duration-500 max-w-2xl">
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-rose-950/20 border border-rose-500/20 flex items-center justify-center text-rose-400">
+                      <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="text-[10px] text-rose-400 font-bold uppercase tracking-wider font-mono">Phase 01 /
+                        Career</span>
+                      <h3 class="font-bold text-white text-base">Ace Technical Interviews</h3>
+                    </div>
+                  </div>
+                  <p class="text-gray-400 text-xs leading-relaxed font-sans">
+                    Top-tier tech companies (Google, Meta, Amazon, Microsoft) evaluate candidates primarily on DSA problem-solving skills. Mastering DSA is the single most critical step to securing high-paying software engineering offers.
+                  </p>
+                  <span
+                    class="text-[9px] bg-rose-950/40 text-rose-400 border border-rose-500/20 px-2 py-0.5 rounded font-mono font-bold uppercase w-max">Career
+                    Acceleration</span>
+                </div>
+              </div>
+
+              <!-- STEP 2: CODE EXCELLENCE -->
+              <div class="flex flex-col gap-3 relative">
+                <!-- Checkpoint Dot -->
+                <div
+                  class="timeline-checkpoint absolute -left-[45px] top-1.5 w-6 h-6 rounded-full border border-gray-700 bg-[#0d1117] flex items-center justify-center text-[10px] text-gray-500 font-mono font-bold transition-all duration-300">
+                  2
+                </div>
+                <!-- Content Card -->
+                <div
+                  class="timeline-card glass-panel premium-card border border-[#30363d] rounded-2xl p-6 flex flex-col gap-3 transition-all duration-500 max-w-2xl">
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-cyan-950/20 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+                      <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="text-[10px] text-cyan-400 font-bold uppercase tracking-wider font-mono">Phase 02 /
+                        Skill</span>
+                      <h3 class="font-bold text-white text-base">Write Optimized & Scalable Code</h3>
+                    </div>
+                  </div>
+                  <p class="text-gray-400 text-xs leading-relaxed font-sans">
+                    DSA teaches you how to manage system memory and optimize execution speed. Understanding Big O Notation, recursion, and complex structures allows you to write production-grade code that scales to millions of active users.
+                  </p>
+                  <span
+                    class="text-[9px] bg-cyan-950/40 text-cyan-400 border border-cyan-500/20 px-2 py-0.5 rounded font-mono font-bold uppercase w-max">Performance
+                    Optimization</span>
+                </div>
+              </div>
+
+              <!-- STEP 3: PROBLEM SOLVING MINDSET -->
+              <div class="flex flex-col gap-3 relative">
+                <!-- Checkpoint Dot -->
+                <div
+                  class="timeline-checkpoint absolute -left-[45px] top-1.5 w-6 h-6 rounded-full border border-gray-700 bg-[#0d1117] flex items-center justify-center text-[10px] text-gray-500 font-mono font-bold transition-all duration-300">
+                  3
+                </div>
+                <!-- Content Card -->
+                <div
+                  class="timeline-card glass-panel premium-card border border-[#30363d] rounded-2xl p-6 flex flex-col gap-3 transition-all duration-500 max-w-2xl">
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-amber-950/20 border border-amber-500/20 flex items-center justify-center text-amber-500">
+                      <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="text-[10px] text-amber-500 font-bold uppercase tracking-wider font-mono">Phase 03 /
+                        Mindset</span>
+                      <h3 class="font-bold text-white text-base">Develop Problem-Solving Patterns</h3>
+                    </div>
+                  </div>
+                  <p class="text-gray-400 text-xs leading-relaxed font-sans">
+                    Learning DSA trains your brain to break down complex issues into manageable subproblems. You learn powerful algorithmic paradigms like recursion, dynamic programming, sliding windows, and binary search.
+                  </p>
+                  <span
+                    class="text-[9px] bg-amber-950/40 text-amber-500 border border-amber-500/20 px-2 py-0.5 rounded font-mono font-bold uppercase w-max">Cognitive
+                    Patterns</span>
+                </div>
+              </div>
+
+              <!-- STEP 4: FOUNDATION -->
+              <div class="flex flex-col gap-3 relative">
+                <!-- Checkpoint Dot -->
+                <div
+                  class="timeline-checkpoint absolute -left-[45px] top-1.5 w-6 h-6 rounded-full border border-gray-700 bg-[#0d1117] flex items-center justify-center text-[10px] text-gray-500 font-mono font-bold transition-all duration-300">
+                  4
+                </div>
+                <!-- Content Card -->
+                <div
+                  class="timeline-card glass-panel premium-card border border-[#30363d] rounded-2xl p-6 flex flex-col gap-3 transition-all duration-500 max-w-2xl">
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-purple-950/20 border border-purple-500/20 flex items-center justify-center text-purple-400">
+                      <i class="fas fa-database"></i>
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="text-[10px] text-purple-400 font-bold uppercase tracking-wider font-mono">Phase 04 /
+                        Foundation</span>
+                      <h3 class="font-bold text-white text-base">Master Core Computer Science</h3>
+                    </div>
+                  </div>
+                  <p class="text-gray-400 text-xs leading-relaxed font-sans">
+                    Data structures are the foundational building blocks of databases, operating systems, networking layers, and compilers. Mastering DSA provides a deep, native intuition of how computer systems operate under the hood.
+                  </p>
+                  <span
+                    class="text-[9px] bg-purple-950/40 text-purple-400 border border-purple-500/20 px-2 py-0.5 rounded font-mono font-bold uppercase w-max">Foundational
+                    CS</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== DASHBOARD VIEW ==================== -->
+      <section id="dashboard-view" class="view-transition hidden p-8 max-w-5xl mx-auto flex flex-col gap-8">
+
+        <!-- Welcome banner -->
+        <div class="flex flex-col md:flex-row gap-6 items-stretch justify-between">
+          <div class="flex-grow flex flex-col justify-center">
+            <h1 class="text-3xl font-extrabold text-white tracking-tight">DSA Solver Studio</h1>
+            <p class="text-gray-400 text-sm mt-1">Master coding interviews with structural code run diagnostics and
+              interactive algorithm visualizers.</p>
+          </div>
+
+          <!-- Circular Statistics ring card -->
+          <div
+            class="flex items-center gap-5 bg-[#161b22]/60 border border-[#30363d] p-5 rounded-2xl min-w-[280px] glass-panel">
+            <div class="relative w-20 h-20">
+              <svg class="w-full h-full">
+                <circle cx="40" cy="40" r="34" class="stroke-gray-800 fill-transparent" stroke-width="6"></circle>
+                <circle cx="40" cy="40" r="34" class="stroke-purple-600 fill-transparent progress-ring-circle"
+                  stroke-width="6" stroke-linecap="round"></circle>
+              </svg>
+              <div class="absolute inset-0 flex items-center justify-center flex-col">
+                <span id="stat-solved-count" class="text-lg font-extrabold text-white">0</span>
+                <span class="text-[9px] text-gray-500 font-bold uppercase tracking-wider">Solved</span>
+              </div>
+            </div>
+
+            <div class="flex-grow flex flex-col gap-1.5 text-xs">
+              <div class="flex items-center justify-between text-gray-400">
+                <span>Progress Score:</span> <strong id="stat-progress-percent" class="text-white font-mono">0%</strong>
+              </div>
+              <div class="flex items-center justify-between text-emerald-400">
+                <span>Easy Problems:</span> <strong id="stat-easy-count" class="font-mono">0/4</strong>
+              </div>
+              <div class="flex items-center justify-between text-amber-400">
+                <span>Medium Problems:</span> <strong id="stat-medium-count" class="font-mono">0/5</strong>
+              </div>
+              <div class="flex items-center justify-between text-red-400">
+                <span>Hard Problems:</span> <strong id="stat-hard-count" class="font-mono">0/1</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Daily Challenge Banner -->
+        <div
+          class="bg-gradient-to-r from-purple-950/40 via-cyan-950/20 to-gray-900 border border-purple-500/20 p-6 rounded-2xl relative overflow-hidden flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-lg glow-purple">
+          <div class="absolute -right-16 -top-16 w-48 h-48 bg-purple-600/10 rounded-full blur-3xl pointer-events-none">
+          </div>
+          <div class="absolute -left-16 -bottom-16 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none">
+          </div>
+
+          <div class="flex items-start gap-4">
+            <div
+              class="w-12 h-12 rounded-xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xl font-bold flex-shrink-0 mt-1">
+              <i class="fas fa-calendar-day"></i>
+            </div>
+            <div>
+              <div class="text-xs uppercase tracking-widest text-purple-400 font-bold font-mono">DAILY CHALLENGE</div>
+              <h2 class="text-xl font-bold text-white mt-0.5">Two Sum</h2>
+              <p class="text-gray-400 text-xs mt-1">Hash Maps, Array traversal • Beats 98.4% of visualizers</p>
+            </div>
+          </div>
+          <button id="daily-challenge-btn"
+            class="px-5 py-2.5 rounded-xl bg-purple-600 border border-purple-500 hover:bg-purple-500 text-white font-bold text-sm shadow-md glow-purple hover:scale-102 transition-all cursor-pointer">
+            Solve & Visualize <i class="fas fa-chevron-right text-xs ml-1"></i>
+          </button>
+        </div>
+
+        <!-- Activity Tracker (GitHub style contribution grid) -->
+        <div class="bg-[#161b22]/60 border border-[#30363d] p-6 rounded-2xl glass-panel">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-calendar-alt text-purple-400"></i>
+              <h3 class="text-sm font-bold text-white uppercase tracking-wider">Activity Tracker</h3>
+            </div>
+            <div class="flex items-center gap-1.5 text-[10px] text-gray-500 font-mono">
+              <span>Less</span>
+              <span class="w-2.5 h-2.5 bg-gray-800/40 rounded-sm border border-gray-900/10"></span>
+              <span class="w-2.5 h-2.5 bg-purple-950/70 rounded-sm"></span>
+              <span class="w-2.5 h-2.5 bg-purple-800/50 rounded-sm"></span>
+              <span class="w-2.5 h-2.5 bg-purple-600/80 rounded-sm"></span>
+              <span class="w-2.5 h-2.5 bg-purple-400 rounded-sm"></span>
+              <span>More</span>
+            </div>
+          </div>
+
+          <!-- Grid wrapper -->
+          <div class="overflow-x-auto pb-2 scrollbar-none">
+            <div id="activity-grid" class="grid grid-flow-col gap-1.5 w-max grid-rows-7 h-[116px]">
+              <!-- Dynamically populated squares (53 columns x 7 rows) -->
+            </div>
+          </div>
+
+          <div class="flex justify-between items-center mt-3 text-[10px] text-gray-500 font-mono">
+            <div>Current streak: <strong class="text-emerald-400" id="activity-streak">0 days</strong></div>
+            <div>Total submissions this year: <strong class="text-purple-400" id="activity-total-count">0</strong></div>
+          </div>
+        </div>
+
+        <!-- Problems list wrapper -->
+        <div class="flex flex-col gap-4">
+
+          <!-- Filters line controls -->
+          <div
+            class="flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between border-b border-gray-800 pb-4">
+            <!-- Search bar -->
+            <div class="relative w-full md:w-80">
+              <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+              <input id="problem-search" type="text" placeholder="Search problems..."
+                class="w-full bg-[#161b22] border border-[#30363d] focus:border-purple-500/50 rounded-xl pl-10 pr-4 py-2 text-sm text-gray-300 placeholder-gray-500 outline-none transition-all">
+            </div>
+
+            <!-- Category Filter scroll container -->
+            <div class="flex items-center gap-3">
+              <select id="difficulty-filter"
+                class="bg-[#161b22] border border-[#30363d] focus:border-purple-500/50 rounded-xl px-3 py-2 text-sm text-gray-400 outline-none cursor-pointer">
+                <option value="All">All Difficulties</option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Category filter buttons -->
+          <div id="category-filters" class="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
+            <!-- Dynamic items -->
+          </div>
+
+          <!-- Problems grid -->
+          <div id="problems-list" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+            <!-- Dynamic elements -->
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ==================== ANALYTICS VIEW ==================== -->
+      <section id="analytics-view" class="view-transition hidden p-8 max-w-5xl mx-auto flex flex-col gap-8 h-full overflow-y-auto">
+        <!-- Header -->
+        <div class="flex flex-col justify-center">
+          <h1 class="text-3xl font-extrabold text-white tracking-tight">Performance Analytics</h1>
+          <p class="text-gray-400 text-sm mt-1 font-sans">Track your progress, category mastery, and recent submission diagnostics.</p>
+        </div>
+
+        <!-- Upper Row stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Solved Card -->
+          <div class="glass-panel border border-[#30363d] p-6 rounded-2xl flex flex-col gap-3 relative overflow-hidden bg-gray-900/30">
+            <span class="text-xs font-bold text-gray-500 uppercase tracking-widest font-mono">Completion Status</span>
+            <div class="flex items-baseline gap-2">
+              <span id="analytics-solved-count" class="text-4xl font-extrabold text-white font-mono">0</span>
+              <span class="text-xs text-gray-500 font-medium">/ <span id="analytics-total-count" class="font-mono">15</span> Solved</span>
+            </div>
+            <div class="w-full bg-gray-800 rounded-full h-1.5 mt-2">
+              <div id="analytics-progress-bar" class="bg-purple-500 h-1.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- Points Card -->
+          <div class="glass-panel border border-[#30363d] p-6 rounded-2xl flex flex-col gap-3 relative overflow-hidden bg-gray-900/30">
+            <span class="text-xs font-bold text-gray-500 uppercase tracking-widest font-mono">Total Points</span>
+            <div class="flex items-baseline gap-2">
+              <span id="analytics-points" class="text-4xl font-extrabold text-purple-400 font-mono">0</span>
+              <span class="text-xs text-gray-500 font-medium">Earned</span>
+            </div>
+            <span class="text-[10px] text-emerald-400 font-semibold flex items-center gap-1 mt-1">
+              <i class="fas fa-arrow-trend-up"></i> Top 5% of active users
+            </span>
+          </div>
+
+          <!-- Rank Card -->
+          <div class="glass-panel border border-[#30363d] p-6 rounded-2xl flex flex-col gap-3 relative overflow-hidden bg-gray-900/30">
+            <span class="text-xs font-bold text-gray-500 uppercase tracking-widest font-mono">Global Rank</span>
+            <div class="flex items-baseline gap-2">
+              <span id="analytics-rank" class="text-4xl font-extrabold text-cyan-400 font-mono">#384</span>
+              <span class="text-xs text-gray-500 font-medium">Worldwide</span>
+            </div>
+            <span class="text-[10px] text-gray-500 mt-1">Percentile: <strong class="text-gray-300 font-mono">97.8%</strong></span>
+          </div>
+        </div>
+
+        <!-- Middle Row category breakdown -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <!-- Categories Mastery -->
+          <div class="glass-panel border border-[#30363d] p-6 rounded-2xl flex flex-col gap-4 bg-gray-900/10">
+            <h2 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <i class="fas fa-award text-purple-400"></i> Category Mastery
+            </h2>
+            <div id="analytics-categories" class="flex flex-col gap-4">
+              <!-- Dynamically populated category progress items -->
+            </div>
+          </div>
+
+          <!-- Difficulty Distribution -->
+          <div class="glass-panel border border-[#30363d] p-6 rounded-2xl flex flex-col gap-4 bg-gray-900/10 justify-between">
+            <h2 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <i class="fas fa-chart-pie text-cyan-400"></i> Difficulty Breakdown
+            </h2>
+            <div class="flex flex-col gap-3.5 my-auto">
+              <!-- Easy -->
+              <div class="flex flex-col gap-1.5">
+                <div class="flex justify-between text-xs">
+                  <span class="text-emerald-400 font-semibold">Easy</span>
+                  <span id="analytics-easy-solved" class="text-gray-400 font-mono">0/0</span>
+                </div>
+                <div class="w-full bg-gray-800 rounded-full h-2">
+                  <div id="analytics-easy-bar" class="bg-emerald-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+              <!-- Medium -->
+              <div class="flex flex-col gap-1.5">
+                <div class="flex justify-between text-xs">
+                  <span class="text-amber-400 font-semibold">Medium</span>
+                  <span id="analytics-medium-solved" class="text-gray-400 font-mono">0/0</span>
+                </div>
+                <div class="w-full bg-gray-800 rounded-full h-2">
+                  <div id="analytics-medium-bar" class="bg-amber-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+              <!-- Hard -->
+              <div class="flex flex-col gap-1.5">
+                <div class="flex justify-between text-xs">
+                  <span class="text-red-400 font-semibold">Hard</span>
+                  <span id="analytics-hard-solved" class="text-gray-400 font-mono">0/0</span>
+                </div>
+                <div class="w-full bg-gray-800 rounded-full h-2">
+                  <div id="analytics-hard-bar" class="bg-red-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Row - Submission History -->
+        <div class="glass-panel border border-[#30363d] p-6 rounded-2xl flex flex-col gap-4 bg-gray-900/10">
+          <h2 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+            <i class="fas fa-history text-purple-400"></i> Recent Submissions
+          </h2>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-gray-300">
+              <thead>
+                <tr class="border-b border-gray-800 text-gray-500 uppercase tracking-wider text-[10px]">
+                  <th class="py-3 px-4">Problem</th>
+                  <th class="py-3 px-4 text-center">Status</th>
+                  <th class="py-3 px-4 text-center">Runtime</th>
+                  <th class="py-3 px-4 text-center">Language</th>
+                  <th class="py-3 px-4 text-right">Time</th>
+                </tr>
+              </thead>
+              <tbody id="analytics-submissions-body" class="divide-y divide-gray-900/50">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== PROFILE VIEW ==================== -->
+      <section id="profile-view" class="view-transition hidden p-8 max-w-5xl mx-auto flex flex-col gap-8 h-full overflow-y-auto">
+        
+        <!-- Header Profile Card -->
+        <div class="glass-panel profile-view-card border border-[#30363d] p-8 rounded-2xl flex flex-col md:flex-row gap-6 items-center md:items-start bg-gray-900/30">
+          <!-- Large Avatar -->
+          <div class="relative">
+            <div id="profile-large-avatar" class="w-24 h-24 rounded-full bg-gradient-to-tr from-cyan-400 via-purple-500 to-indigo-600 flex items-center justify-center font-bold text-3xl text-white shadow-lg border-2 border-purple-500/20">
+              U
+            </div>
+            <div class="absolute bottom-1 right-1 w-6 h-6 rounded-full bg-emerald-500 border-4 border-gray-950 flex items-center justify-center" title="Online Status">
+              <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
+            </div>
+          </div>
+          
+          <!-- User Info Details -->
+          <div class="flex-grow text-center md:text-left flex flex-col gap-3">
+            <div class="flex flex-col md:flex-row md:items-center gap-2.5">
+              <h2 id="profile-full-name" class="text-2xl font-extrabold text-white tracking-tight profile-view-text-white">Guest User</h2>
+              <span id="profile-status-badge" class="profile-badge profile-badge-purple w-max mx-auto md:mx-0">Guest Profile</span>
+            </div>
+            
+            <p id="profile-email" class="text-sm font-mono text-gray-400">guest@algojudge.com</p>
+            
+            <div class="flex flex-wrap gap-2.5 justify-center md:justify-start mt-2">
+              <span class="profile-badge profile-badge-cyan flex items-center gap-1.5">
+                <i class="fas fa-trophy text-amber-500"></i> Rank <span id="profile-global-rank">#384</span>
+              </span>
+              <span class="profile-badge profile-badge-emerald flex items-center gap-1.5">
+                <i class="fas fa-shield-halved text-cyan-400"></i> DSA Virtuoso
+              </span>
+              <span class="profile-badge profile-badge-purple flex items-center gap-1.5">
+                <i class="fas fa-circle-check text-emerald-400"></i> Pro Solved
+              </span>
+            </div>
+          </div>
+          
+          <!-- Action Buttons -->
+          <div class="flex gap-3 mt-4 md:mt-0">
+            <button id="profile-logout-btn" class="px-4 py-2 text-xs font-semibold rounded-lg bg-red-950/40 border border-red-500/20 text-red-400 hover:bg-red-900/20 transition-all flex items-center gap-1.5 cursor-pointer">
+              <i class="fas fa-sign-out-alt"></i> Log Out
+            </button>
+          </div>
+        </div>
+
+        <!-- Metrics Row -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div class="glass-panel profile-view-card border border-[#30363d] p-5 rounded-2xl flex flex-col gap-1.5 bg-gray-900/30">
+            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest font-mono">Solved Problems</span>
+            <span id="profile-stat-solved" class="text-3xl font-extrabold text-white font-mono profile-view-text-white">0</span>
+          </div>
+          
+          <div class="glass-panel profile-view-card border border-[#30363d] p-5 rounded-2xl flex flex-col gap-1.5 bg-gray-900/30">
+            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest font-mono">Total Points</span>
+            <span id="profile-stat-points" class="text-3xl font-extrabold text-purple-400 font-mono">0</span>
+          </div>
+          
+          <div class="glass-panel profile-view-card border border-[#30363d] p-5 rounded-2xl flex flex-col gap-1.5 bg-gray-900/30">
+            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest font-mono">Discuss Posts</span>
+            <span id="profile-stat-posts" class="text-3xl font-extrabold text-cyan-400 font-mono">0</span>
+          </div>
+          
+          <div class="glass-panel profile-view-card border border-[#30363d] p-5 rounded-2xl flex flex-col gap-1.5 bg-gray-900/30">
+            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest font-mono">Submissions</span>
+            <span id="profile-stat-submissions" class="text-3xl font-extrabold text-emerald-400 font-mono">0</span>
+          </div>
+        </div>
+
+        <!-- Main Content split columns -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          <!-- LEFT COLUMN: Codes & Submissions (Accordion) -->
+          <div class="lg:col-span-7 flex flex-col gap-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-bold text-white tracking-tight profile-view-text-white flex items-center gap-2">
+                <i class="fas fa-code text-cyan-400"></i> Your Saved Code Submissions
+              </h3>
+              <span class="text-[10px] text-gray-500 font-mono">Click a submission to view code</span>
+            </div>
+            
+            <div id="profile-submissions-list" class="flex flex-col gap-3">
+              <!-- Dynamically populated accordions -->
+            </div>
+          </div>
+          
+          <!-- RIGHT COLUMN: Posts & Analytics -->
+          <div class="lg:col-span-5 flex flex-col gap-6">
+            
+            <!-- Posts list -->
+            <div class="flex flex-col gap-4">
+              <h3 class="text-lg font-bold text-white tracking-tight profile-view-text-white flex items-center gap-2">
+                <i class="fas fa-comments text-purple-400"></i> Your Discussions & Posts
+              </h3>
+              
+              <div id="profile-posts-list" class="flex flex-col gap-3">
+                <!-- Dynamically populated posts list -->
+              </div>
+            </div>
+            
+            <!-- Category breakdown mini analytics -->
+            <div class="glass-panel profile-view-card border border-[#30363d] p-6 rounded-2xl flex flex-col gap-4 bg-gray-900/30">
+              <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider font-mono">Category Mastery</h4>
+              <div id="profile-category-mastery" class="flex flex-col gap-3.5">
+                <!-- Dynamically populated progress bars -->
+              </div>
+            </div>
+            
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ==================== POPULAR QUESTIONS VIEW ==================== -->
+      <section id="popular-questions-view" class="view-transition hidden p-8 max-w-5xl mx-auto flex flex-col gap-8">
+        <!-- Page Title & Header -->
+        <div class="flex flex-col justify-center">
+          <h1 class="text-3xl font-extrabold text-white tracking-tight">Popular DSA Questions</h1>
+          <p class="text-gray-400 text-sm mt-1 font-sans">Curated list of high-frequency interview questions asked by
+            top-tier tech companies. Master these to crack your next dream job.</p>
+        </div>
+
+        <!-- Company filter buttons -->
+        <div id="popular-company-filters"
+          class="flex gap-2.5 overflow-x-auto pb-2 scrollbar-none border-b border-gray-800 pb-4">
+          <!-- Dynamic items -->
+        </div>
+
+        <!-- Grid of Problems -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="popular-problems-grid">
+          <!-- Dynamically populated problem cards -->
+        </div>
+      </section>
+
+      <!-- ==================== READ VIEW ==================== -->
+      <section id="read-view" class="view-transition hidden p-8 max-w-5xl mx-auto flex flex-col gap-8 h-full overflow-y-auto">
+        <div class="flex flex-col justify-center">
+          <h1 class="text-3xl font-extrabold text-white tracking-tight">Read DSA Tutorials</h1>
+          <p class="text-gray-400 text-sm mt-1 font-sans">Master key algorithmic concepts and structures. Learn the
+            fundamentals of space-time complexities, traversal strategies, and sorting patterns.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start flex-grow">
+          <!-- Left Topic Selector (4 cols) -->
+          <div class="md:col-span-4 flex flex-col gap-4">
+            <div class="relative w-full">
+              <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+              <input id="read-search" type="text" placeholder="Search topics..."
+                class="w-full bg-[#161b22] border border-[#30363d] focus:border-purple-500/50 rounded-xl pl-10 pr-4 py-2 text-sm text-gray-300 placeholder-gray-500 outline-none transition-all">
+            </div>
+
+            <div id="read-topic-list" class="flex flex-col gap-2 max-h-[500px] overflow-y-auto pr-1">
+              <!-- Dynamic topic buttons -->
+            </div>
+          </div>
+
+          <!-- Right Content Display (8 cols) -->
+          <div
+            class="md:col-span-8 glass-panel border border-[#30363d] rounded-2xl p-6 min-h-[400px] flex flex-col gap-6 relative overflow-hidden"
+            id="read-content-panel">
+            <!-- Dynamic topic content -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== DISCUSS VIEW ==================== -->
+      <section id="discuss-view" class="view-transition hidden p-8 max-w-5xl mx-auto flex flex-col gap-8 h-full overflow-y-auto">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="flex flex-col">
+            <h1 class="text-3xl font-extrabold text-white tracking-tight">Discuss Community</h1>
+            <p class="text-gray-400 text-sm mt-1 font-sans">Share your solutions, discuss patterns, and ask questions.
+              Exchange ideas with developers globally.</p>
+          </div>
+
+          <button id="btn-create-post"
+            class="px-5 py-2.5 rounded-xl bg-purple-600 border border-purple-500 hover:bg-purple-500 text-white font-bold text-sm shadow-md glow-purple hover:scale-102 transition-all cursor-pointer">
+            Create New Post <i class="fas fa-pen-fancy ml-1.5 text-xs"></i>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <!-- Left Feed (8 cols) -->
+          <div class="lg:col-span-8 flex flex-col gap-4" id="discuss-posts-feed">
+            <!-- Dynamic posts list -->
+          </div>
+
+          <!-- Right Form / Categories (4 cols) -->
+          <div class="lg:col-span-4 flex flex-col gap-6">
+            <!-- Post Creation Card -->
+            <div id="create-post-card"
+              class="hidden glass-panel border border-[#30363d] rounded-2xl p-5 flex flex-col gap-4 animate-fade-in relative overflow-hidden">
+              <div class="flex items-center justify-between border-b border-gray-800 pb-2">
+                <span class="text-xs font-bold text-white font-mono uppercase">Write Post</span>
+                <button id="btn-close-create" class="text-gray-500 hover:text-white transition-colors"><i
+                    class="fas fa-times text-xs"></i></button>
+              </div>
+
+              <form id="new-post-form" class="flex flex-col gap-3">
+                <div class="flex flex-col gap-1">
+                  <label class="text-[10px] text-gray-500 font-bold uppercase">Post Title</label>
+                  <input type="text" id="post-title" required placeholder="e.g. Optimized solution for subsets..."
+                    class="w-full bg-[#0d1117] border border-[#30363d] rounded-xl px-3.5 py-2 text-xs text-gray-200 outline-none focus:border-purple-500/50">
+                </div>
+                <div class="flex flex-col gap-1">
+                  <label class="text-[10px] text-gray-500 font-bold uppercase">Channel Category</label>
+                  <select id="post-category"
+                    class="w-full bg-[#0d1117] border border-[#30363d] rounded-xl px-3.5 py-2 text-xs text-gray-300 outline-none focus:border-purple-500/50 cursor-pointer">
+                    <option value="General">General Discuss</option>
+                    <option value="Solutions">Solution Shares</option>
+                    <option value="Interviews">Interview Experiences</option>
+                  </select>
+                </div>
+                <div class="flex flex-col gap-1">
+                  <label class="text-[10px] text-gray-500 font-bold uppercase">Post Content</label>
+                  <textarea id="post-body" required rows="4" placeholder="Share code snippets, notes, or tips..."
+                    class="w-full bg-[#0d1117] border border-[#30363d] rounded-xl p-3 text-xs text-gray-200 outline-none focus:border-purple-500/50 resize-none font-sans leading-relaxed"></textarea>
+                </div>
+                <button type="submit"
+                  class="w-full py-2.5 rounded-xl bg-purple-600 border border-purple-500 hover:bg-purple-500 text-white font-bold text-xs shadow-md glow-purple transition-all cursor-pointer">
+                  Publish Post
+                </button>
+              </form>
+            </div>
+
+            <!-- Categories Card -->
+            <div class="glass-panel border border-[#30363d] rounded-2xl p-5 flex flex-col gap-4">
+              <span class="text-xs font-bold text-white uppercase tracking-wider font-mono">Channels</span>
+              <div class="flex flex-col gap-2.5 text-xs">
+                <button
+                  class="channel-filter-btn flex items-center justify-between px-3 py-2 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-400 font-semibold transition-all cursor-pointer"
+                  data-channel="All">
+                  <span><i class="fas fa-hashtag mr-2 opacity-60"></i> All channels</span>
+                  <span
+                    class="bg-purple-950 text-purple-400 border border-purple-500/20 px-2 py-0.5 rounded font-mono text-[10px]"
+                    id="discuss-count-all">0</span>
+                </button>
+                <button
+                  class="channel-filter-btn flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:bg-gray-800/40 border border-transparent hover:border-gray-800 font-medium transition-all cursor-pointer"
+                  data-channel="General">
+                  <span><i class="fas fa-comments mr-2 text-rose-400 opacity-80"></i> General Discuss</span>
+                  <span
+                    class="bg-gray-900 text-gray-500 border border-gray-800 px-2 py-0.5 rounded font-mono text-[10px]"
+                    id="discuss-count-general">0</span>
+                </button>
+                <button
+                  class="channel-filter-btn flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:bg-gray-800/40 border border-transparent hover:border-gray-800 font-medium transition-all cursor-pointer"
+                  data-channel="Solutions">
+                  <span><i class="fas fa-laptop-code mr-2 text-cyan-400 opacity-80"></i> Solution Shares</span>
+                  <span
+                    class="bg-gray-900 text-gray-500 border border-gray-800 px-2 py-0.5 rounded font-mono text-[10px]"
+                    id="discuss-count-solutions">0</span>
+                </button>
+                <button
+                  class="channel-filter-btn flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:bg-gray-800/40 border border-transparent hover:border-gray-800 font-medium transition-all cursor-pointer"
+                  data-channel="Interviews">
+                  <span><i class="fas fa-briefcase mr-2 text-amber-500 opacity-80"></i> Interview Experiences</span>
+                  <span
+                    class="bg-gray-900 text-gray-500 border border-gray-800 px-2 py-0.5 rounded font-mono text-[10px]"
+                    id="discuss-count-interviews">0</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== VISUALIZER STUDIO VIEW ==================== -->
+      <section id="visualizer-studio-view" class="view-transition hidden p-8 max-w-5xl mx-auto flex flex-col gap-6">
+        <!-- Header area -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="flex flex-col">
+            <h1
+              class="text-3xl font-extrabold text-white tracking-tight bg-gradient-to-r from-white via-gray-200 to-cyan-400 bg-clip-text text-transparent">
+              Visualizer Studio</h1>
+            <p class="text-gray-400 text-sm mt-1 font-sans">Step through algorithms visual timeline, examine variables
+              scope, and trace execution logic.</p>
+          </div>
+          <!-- Problem selector dropdown -->
+          <div class="flex items-center gap-2.5">
+            <label class="text-xs text-gray-400 font-semibold font-mono uppercase tracking-wider">Select
+              Problem:</label>
+            <select id="studio-problem-select"
+              class="bg-[#161b22] border border-[#30363d] focus:border-cyan-500/50 rounded-xl px-4 py-2.5 text-sm text-gray-300 outline-none cursor-pointer font-sans shadow-lg glow-cyan transition-all">
+              <!-- Dynamically populated options -->
+            </select>
+          </div>
+        </div>
+
+        <!-- Main Workspace Split Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+
+          <!-- LEFT PANEL: Info & Debugger Controls (5 cols) -->
+          <div class="lg:col-span-5 flex flex-col gap-6">
+            <!-- Problem description box -->
+            <div
+              class="glass-panel border border-[#30363d] rounded-2xl p-5 flex flex-col gap-3 min-h-[160px] relative overflow-hidden">
+              <div class="absolute -right-8 -top-8 w-20 h-20 bg-cyan-500/5 rounded-full blur-xl pointer-events-none">
+              </div>
+              <div class="flex items-center justify-between border-b border-[#30363d]/50 pb-2.5">
+                <h3 id="studio-prob-title" class="font-bold text-white text-sm">Problem Title</h3>
+                <span id="studio-prob-diff" class="text-[10px] font-mono px-2 py-0.5 rounded">Easy</span>
+              </div>
+              <div id="studio-prob-statement"
+                class="text-gray-300 text-xs leading-relaxed max-h-[140px] overflow-y-auto pr-1">
+                <!-- Statement text -->
+              </div>
+            </div>
+
+            <!-- Variables scope box -->
+            <div class="glass-panel border border-[#30363d] rounded-2xl p-5 flex flex-col gap-3">
+              <span
+                class="text-xs font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1.5 border-b border-[#30363d]/50 pb-2.5 font-sans">
+                <i class="fas fa-bug text-cyan-400"></i> Variables Scope
+              </span>
+              <div id="studio-vis-vars" class="min-h-[60px] flex items-center justify-center">
+                <!-- Variables list table -->
+              </div>
+            </div>
+
+            <!-- Control board deck -->
+            <div class="glass-panel border border-[#30363d] rounded-2xl p-5 flex flex-col gap-4">
+              <span
+                class="text-xs font-semibold text-gray-400 uppercase tracking-wider border-b border-[#30363d]/50 pb-2.5">
+                Playback Controls
+              </span>
+              <div class="flex items-center gap-2">
+                <button id="btn-studio-prev"
+                  class="w-10 h-10 bg-[#21262d] border border-[#30363d] hover:bg-gray-800 rounded-xl text-gray-400 hover:text-white transition-all cursor-pointer flex items-center justify-center"
+                  title="Previous Step">
+                  <i class="fas fa-chevron-left text-xs"></i>
+                </button>
+                <button id="btn-studio-play"
+                  class="flex-grow py-2.5 rounded-xl bg-purple-600 border border-purple-500 text-white font-bold text-sm shadow-md glow-purple hover:bg-purple-500 transition-all cursor-pointer flex items-center justify-center gap-2"
+                  title="Auto Play Timeline">
+                  <i class="fas fa-play text-xs"></i> Play
+                </button>
+                <button id="btn-studio-next"
+                  class="w-10 h-10 bg-[#21262d] border border-[#30363d] hover:bg-gray-800 rounded-xl text-gray-400 hover:text-white transition-all cursor-pointer flex items-center justify-center"
+                  title="Next Step">
+                  <i class="fas fa-chevron-right text-xs"></i>
+                </button>
+                <button id="btn-studio-reset"
+                  class="w-10 h-10 bg-gray-800/40 border border-gray-700 hover:bg-gray-800 rounded-xl text-gray-400 hover:text-white transition-all cursor-pointer flex items-center justify-center"
+                  title="Reset Steps">
+                  <i class="fas fa-undo text-xs"></i>
+                </button>
+              </div>
+
+              <!-- Speed control slider -->
+              <div class="flex items-center justify-between text-[10px] text-gray-500 font-mono pt-1">
+                <span>Timeline Speed:</span>
+                <div class="flex items-center gap-2">
+                  <span>Slow</span>
+                  <input type="range" id="studio-speed-slider" min="1" max="4" value="2"
+                    class="w-28 accent-purple-500 h-1 bg-gray-800 rounded-lg appearance-none outline-none cursor-pointer">
+                  <span>Fast</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT PANEL: Canvas & Code highlight (7 cols) -->
+          <div class="lg:col-span-7 flex flex-col gap-6">
+            <!-- Animation canvas container -->
+            <div
+              class="glass-panel border border-[#30363d] rounded-2xl overflow-hidden flex flex-col min-h-[300px] h-[360px] relative shadow-2xl">
+              <div id="studio-vis-canvas" class="flex-grow relative vis-container flex items-center justify-center">
+                <!-- Visual arrays / trees / stack elements -->
+              </div>
+              <div id="studio-vis-desc"
+                class="h-14 border-t border-[#30363d] bg-[#161b22]/90 px-5 flex items-center text-xs text-gray-300 font-sans border-b border-[#30363d]/50">
+                <!-- Executer narrative explanations -->
+              </div>
+            </div>
+
+            <!-- Code Executer Line Tracker -->
+            <div id="studio-code-tracker"
+              class="h-[250px] flex flex-col bg-[#161b22]/50 rounded-xl border border-[#30363d] overflow-hidden">
+              <!-- Toolbar -->
+              <div
+                class="h-10 border-b border-[#30363d] bg-[#161b22] px-4 flex items-center justify-between flex-shrink-0">
+                <div class="flex items-center gap-2">
+                  <span
+                    class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider font-sans">Language:</span>
+                  <select id="studio-language-select"
+                    class="bg-[#0d1117] border border-[#30363d] focus:border-cyan-500/50 rounded px-2 py-0.5 text-xs text-gray-300 font-mono outline-none cursor-pointer">
+                    <option value="python">Python 3</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="cpp">C++ (GCC 12)</option>
+                    <option value="java">Java (OpenJDK 17)</option>
+                  </select>
+                </div>
+                <div class="text-[10px] text-cyan-400 font-mono flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span> Executing Tracker
+                </div>
+              </div>
+
+              <!-- Content lines -->
+              <div id="studio-code-lines"
+                class="flex-grow p-3 overflow-y-auto font-mono text-xs text-gray-400 bg-[#0d1117]/60">
+                <!-- Lines render here -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ==================== WORKSPACE VIEW (DUAL PANES) ==================== -->
+      <section id="workspace-view" class="view-transition hidden h-full flex flex-col">
+        <!-- Workspace header bar -->
+        <div class="h-12 border-b border-[#30363d] flex items-center justify-between px-6 bg-gray-950/20">
+          <div class="flex items-center gap-4">
+            <button
+              class="nav-to-dashboard text-xs font-semibold text-gray-400 hover:text-white flex items-center gap-1.5 transition-all">
+              <i class="fas fa-chevron-left"></i> Back to Dashboard
+            </button>
+            <div class="h-4 w-px bg-gray-800"></div>
+            <!-- Badges -->
+            <span id="prob-cat"
+              class="text-xs text-purple-400 font-mono font-semibold bg-purple-950/20 border border-purple-500/20 px-2 py-0.5 rounded">Category</span>
+            <h2 id="prob-title" class="font-bold text-sm text-white">Problem Title</h2>
+            <span id="prob-diff" class="text-[10px] font-mono px-2 py-0.5 rounded">Easy</span>
+            <div id="workspace-company-logos" class="flex items-center gap-2 ml-1.5 border-l border-gray-800 pl-3">
+              <!-- Dynamically populated company logos -->
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="text-xs text-gray-500 font-mono flex items-center gap-1.5"><span
+                class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Online compiler connected</div>
+          </div>
+        </div>
+
+        <!-- Body split screen -->
+        <div class="flex-grow flex overflow-hidden">
+
+          <!-- LEFT COLUMN: Problem Details -->
+          <div class="w-1/2 border-r border-[#30363d] flex flex-col h-full bg-[#0d1117]">
+            <div class="flex border-b border-[#30363d] bg-gray-900/10" id="workspace-tabs-header">
+              <button id="workspace-tab-btn-desc"
+                class="px-6 py-3.5 text-xs font-bold border-b-2 border-purple-500 text-purple-400 bg-purple-500/5 transition-all">
+                <i class="fas fa-align-left mr-1.5"></i> Description
+              </button>
+              <button id="workspace-tab-btn-discuss"
+                class="px-6 py-3.5 text-xs font-semibold text-gray-500 hover:text-gray-300 border-b-2 border-transparent transition-all">
+                <i class="fas fa-comments mr-1.5"></i> Discussion
+              </button>
+              <button id="workspace-tab-btn-solutions"
+                class="px-6 py-3.5 text-xs font-semibold text-gray-500 hover:text-gray-300 border-b-2 border-transparent transition-all">
+                <i class="fas fa-lightbulb mr-1.5"></i> Solutions
+              </button>
+            </div>
+
+            <div class="flex-grow p-6 overflow-y-auto flex flex-col gap-6" id="workspace-panes-container">
+              <!-- DESCRIPTION PANE -->
+              <div id="workspace-pane-desc" class="flex flex-col gap-6">
+                <!-- Statement -->
+                <div id="prob-statement" class="text-gray-300 text-sm leading-relaxed">
+                  <!-- Dynamic text content -->
+                </div>
+
+                <!-- Examples -->
+                <div>
+                  <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">Example Test Cases</h3>
+                  <div id="prob-examples">
+                    <!-- Dynamic content -->
+                  </div>
+                </div>
+
+                <!-- Constraints -->
+                <div class="border-t border-[#30363d] pt-6 mb-6">
+                  <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">Constraints</h3>
+                  <ul id="prob-constraints"
+                    class="list-disc list-inside text-xs text-gray-500 flex flex-col gap-2 font-mono">
+                    <!-- Dynamic content -->
+                  </ul>
+                </div>
+              </div>
+
+              <!-- DISCUSSION PANE -->
+              <div id="workspace-pane-discuss" class="hidden flex flex-col gap-4">
+                <div class="flex items-center justify-between border-b border-gray-800 pb-2">
+                  <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400">Problem Discussions</h3>
+                  <button id="btn-workspace-add-post" class="px-2.5 py-1 rounded bg-purple-600 hover:bg-purple-500 text-white font-bold text-[10px] shadow transition-all cursor-pointer">
+                    <i class="fas fa-plus"></i> Add Comment
+                  </button>
+                </div>
+                
+                <!-- Comment form -->
+                <div id="workspace-comment-form-container" class="hidden bg-[#161b22]/50 border border-gray-800 p-3 rounded-xl flex flex-col gap-2 animate-fade-in">
+                  <textarea id="workspace-comment-body" rows="2" placeholder="Ask a question or post your solution..." class="w-full bg-[#0d1117] border border-[#30363d] rounded-lg p-2 text-xs text-gray-200 outline-none focus:border-purple-500/50 resize-none font-sans"></textarea>
+                  <div class="flex justify-end gap-2">
+                    <button id="btn-workspace-comment-cancel" class="px-2.5 py-1 rounded bg-[#21262d] border border-[#30363d] text-gray-400 hover:text-white text-[10px] cursor-pointer">Cancel</button>
+                    <button id="btn-workspace-comment-submit" class="px-3 py-1 rounded bg-purple-600 text-white text-[10px] font-bold cursor-pointer">Post</button>
+                  </div>
+                </div>
+
+                <div id="workspace-discuss-list" class="flex flex-col gap-3">
+                  <!-- Dynamic comments -->
+                </div>
+              </div>
+
+              <!-- SOLUTIONS PANE -->
+              <div id="workspace-pane-solutions" class="hidden flex flex-col gap-4">
+                <div class="border-b border-gray-800 pb-2">
+                  <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400">Optimal Approaches</h3>
+                </div>
+                <div id="workspace-solutions-content" class="flex flex-col gap-4">
+                  <!-- Optimal solution walkthrough -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN: Code Editor / Visualizer with Tabs -->
+          <div class="w-1/2 flex flex-col h-full bg-[#161b22]/40">
+            <!-- Tabs Bar -->
+            <div class="flex border-b border-[#30363d] bg-gray-950/20">
+              <button id="tab-btn-editor"
+                class="flex-1 py-3 text-xs font-bold text-center border-b-2 border-purple-500 text-purple-400 bg-purple-500/5 transition-all">
+                <i class="fas fa-edit mr-1"></i> Interactive Editor
+              </button>
+              <button id="tab-btn-visualizer"
+                class="flex-grow flex-1 py-3 text-xs font-bold text-center border-b-2 border-transparent text-gray-500 hover:text-gray-300 transition-all flex items-center justify-center gap-1.5">
+                <i class="fas fa-project-diagram mr-1"></i> DSA Visualizer Studio
+                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+              </button>
+            </div>
+
+            <!-- Pane Contents -->
+            <div class="flex-grow relative overflow-hidden flex flex-col">
+
+              <!-- PANE 1: Interactive Code Editor Layout -->
+              <div id="pane-editor" class="flex flex-col h-full">
+                <!-- Editor Toolbar -->
+                <div class="h-10 border-b border-[#30363d] bg-[#161b22] px-4 flex items-center justify-between">
+                  <div class="flex items-center gap-1">
+                    <select id="language-select"
+                      class="bg-[#0d1117] border border-[#30363d] rounded px-2.5 py-1 text-xs text-gray-300 font-mono outline-none cursor-pointer">
+                      <option value="python">Python 3</option>
+                      <option value="javascript">JavaScript</option>
+                      <option value="cpp">C++ (GCC 12)</option>
+                      <option value="java">Java (OpenJDK 17)</option>
+                    </select>
+                  </div>
+                  <div class="flex items-center gap-1 text-[10px] text-gray-500 font-mono">
+                    <span>Ctrl + Enter to run</span>
+                  </div>
+                </div>
+
+                <!-- Textarea Code box -->
+                <div class="flex-grow flex relative font-mono text-sm overflow-hidden bg-[#0d1117]">
+                  <!-- Line numbers -->
+                  <div id="editor-line-numbers"
+                    class="editor-line-number py-3 select-none flex flex-col font-mono text-xs overflow-hidden leading-5 bg-[#0d1117]">
+                    <!-- Dynamic -->
+                  </div>
+
+                  <!-- TextArea inputs -->
+                  <textarea id="code-editor-area" spellcheck="false"
+                    class="flex-grow h-full bg-[#0d1117] text-gray-300 font-mono text-xs p-3 leading-5 outline-none resize-none border-none overflow-y-auto selection:bg-purple-900/60"></textarea>
+                </div>
+
+                <!-- Resizable Console Output Panel at the bottom -->
+                <div id="console-panel"
+                  class="h-10 border-t border-[#30363d] bg-[#161b22] flex flex-col overflow-hidden transition-all duration-300">
+                  <!-- Header toggle -->
+                  <div class="h-10 px-4 flex items-center justify-between border-b border-[#30363d]/40 flex-shrink-0">
+                    <button id="console-tab-btn"
+                      class="h-full border-b-2 border-transparent text-gray-500 font-bold text-xs">
+                      Console Logs
+                    </button>
+                    <!-- Buttons actions -->
+                    <div class="flex items-center gap-2">
+                      <button id="btn-run-code"
+                        class="px-3.5 py-1 rounded bg-[#21262d] border border-[#30363d] hover:bg-gray-800 text-gray-300 font-semibold text-xs transition-all cursor-pointer">
+                        Run Code
+                      </button>
+                      <button id="btn-submit-code"
+                        class="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 border border-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-950/20 hover:scale-102 transition-all cursor-pointer">
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Logs terminal inside -->
+                  <div id="console-output"
+                    class="flex-grow p-4 overflow-y-auto bg-[#0d1117]/80 font-mono text-xs text-gray-400">
+                    <!-- Terminal messages -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- PANE 2: DSA Visualizer Workspace Layout -->
+              <div id="pane-visualizer" class="hidden flex flex-col h-full bg-[#0d1117] overflow-hidden">
+                <!-- Visualizer Split: Top half animation canvas, Bottom half code execution tracker -->
+                <div class="flex-1 min-h-0 flex flex-col border-b border-[#30363d]">
+                  <!-- Display Area -->
+                  <div id="vis-canvas" class="flex-grow relative vis-container flex items-center justify-center">
+                    <!-- Dynamic visualizations injected here -->
+                  </div>
+
+                  <!-- Display step message description bar -->
+                  <div id="vis-desc"
+                    class="h-12 border-t border-[#30363d] bg-gray-900/40 px-4 flex items-center text-xs text-gray-400">
+                    <!-- Step details message -->
+                  </div>
+                </div>
+
+                <!-- Bottom half split: left variables debugger list, right code highlighter tracker -->
+                <div class="flex-1 min-h-0 flex items-stretch">
+
+                  <!-- Left side: variables states -->
+                  <div
+                    class="w-1/2 border-r border-[#30363d] p-4 flex flex-col justify-between overflow-y-auto bg-gray-950/20">
+                    <div class="flex flex-col gap-2">
+                      <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Variables Scope</span>
+                      <div id="vis-vars" class="mt-1">
+                        <!-- Variables state grid table -->
+                      </div>
+                    </div>
+
+                    <!-- Visualizer Control Deck inside vars box -->
+                    <div class="mt-4 border-t border-gray-800/80 pt-4 flex flex-col gap-3">
+                      <!-- Controls Play/Pause steps buttons -->
+                      <div class="flex items-center gap-2">
+                        <button id="btn-vis-prev"
+                          class="w-9 h-9 bg-[#21262d] border border-[#30363d] hover:bg-gray-800 rounded-lg text-gray-400 hover:text-white transition-all cursor-pointer flex items-center justify-center text-xs"
+                          title="Previous Step">
+                          <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button id="btn-vis-play"
+                          class="flex-1 py-2 rounded-lg bg-purple-600 border border-purple-500 text-white font-bold text-xs shadow-md glow-purple hover:bg-purple-500 transition-all cursor-pointer"
+                          title="Auto Play Timeline">
+                          <i class="fas fa-play mr-1"></i> Play
+                        </button>
+                        <button id="btn-vis-next"
+                          class="w-9 h-9 bg-[#21262d] border border-[#30363d] hover:bg-gray-800 rounded-lg text-gray-400 hover:text-white transition-all cursor-pointer flex items-center justify-center text-xs"
+                          title="Next Step">
+                          <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <button id="btn-vis-reset"
+                          class="w-9 h-9 bg-gray-800/40 border border-gray-700 hover:bg-gray-800 rounded-lg text-gray-400 hover:text-white transition-all cursor-pointer flex items-center justify-center text-xs"
+                          title="Reset Steps">
+                          <i class="fas fa-undo"></i>
+                        </button>
+                      </div>
+
+                      <!-- Speed Slider control -->
+                      <div class="flex items-center justify-between text-[10px] text-gray-500 font-mono">
+                        <span>Speed slider:</span>
+                        <div class="flex items-center gap-2">
+                          <span>Slow</span>
+                          <input type="range" id="speed-slider" min="1" max="4" value="2"
+                            class="w-24 accent-purple-500 h-1 bg-gray-800 rounded-lg appearance-none outline-none cursor-pointer">
+                          <span>Fast</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Right side: line execution tracker code -->
+                  <div class="w-1/2 p-4 overflow-hidden" id="vis-code-tracker">
+                    <!-- Dynamic code display highlighting lines -->
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ==================== VICTORY Modal Overlay ==================== -->
+  <section id="victory-modal"
+    class="hidden fixed inset-0 bg-gray-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <!-- Confetti layer -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden modal-confetti-bg"></div>
+
+    <div
+      class="w-full max-w-sm bg-[#161b22] border border-[#30363d] rounded-2xl p-6 shadow-2xl relative z-10 glass-panel animate-bounce-short">
+      <!-- Success Icon -->
+      <div
+        class="w-14 h-14 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-2xl mx-auto shadow-lg glow-emerald mb-4">
+        <i class="fas fa-check-double animate-bounce"></i>
+      </div>
+
+      <h2 class="text-center text-xl font-bold tracking-tight text-white">Accepted!</h2>
+      <p class="text-center text-xs text-gray-500 mt-1 font-mono">All verification checks passed.</p>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-2 gap-3 mt-6">
+        <div class="bg-gray-900/50 border border-gray-800 p-3 rounded-xl text-center">
+          <div class="text-[10px] text-gray-500 uppercase font-bold">Runtime</div>
+          <div class="text-lg font-bold text-cyan-400 font-mono mt-0.5">38 ms</div>
+          <div class="text-[9px] text-emerald-400 mt-0.5">Beats 98.4%</div>
+        </div>
+        <div class="bg-gray-900/50 border border-gray-800 p-3 rounded-xl text-center">
+          <div class="text-[10px] text-gray-500 uppercase font-bold">Memory</div>
+          <div class="text-lg font-bold text-purple-400 font-mono mt-0.5">14.1 MB</div>
+          <div class="text-[9px] text-emerald-400 mt-0.5">Beats 95.1%</div>
+        </div>
+      </div>
+
+      <!-- Footer action -->
+      <div class="mt-6 flex flex-col gap-2">
+        <button id="close-victory-modal"
+          class="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-md glow-purple transition-all cursor-pointer">
+          Awesome, keep solving!
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== LAUNCH TRANSITION OVERLAY ==================== -->
+  <div id="transition-overlay"
+    class="hidden fixed inset-0 bg-[#0d1117] z-50 flex flex-col items-center justify-center overflow-hidden transition-opacity duration-500">
+    <!-- Starfield canvas -->
+    <canvas id="starfield-canvas" class="absolute inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- Spaceship container -->
+    <div id="spaceship-container"
+      class="relative z-10 flex flex-col items-center gap-6 scale-0 transition-transform duration-1000 ease-in-out">
+      <!-- Rocket icon with flame glow -->
+      <div
+        class="relative w-20 h-20 bg-purple-950/30 border border-purple-500/20 rounded-full flex items-center justify-center shadow-lg shadow-purple-500/20">
+        <i class="fas fa-rocket text-3xl text-purple-400 -rotate-45 transform spaceship-icon"></i>
+        <!-- Flame particles -->
+        <span
+          class="absolute -bottom-2 w-4 h-8 bg-gradient-to-t from-transparent via-orange-500 to-amber-400 blur-[2px] rounded-full animate-bounce"></span>
+      </div>
+
+      <div class="flex flex-col items-center gap-1.5 text-center">
+        <div class="text-xs uppercase font-mono tracking-widest text-cyan-400 font-bold animate-pulse">Launching Judge
+          Engine</div>
+        <div class="text-[10px] text-gray-500 font-mono">Bypassing gravity systems...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load line mappings -->
+  <script src="visualizer_mappings.js"></script>
+  <!-- Load tutorial contents -->
+  <script src="read_content.js"></script>
+  <!-- Load Problem DB first -->
+  <script src="problems.js"></script>
+  <!-- Load Visualizer engine -->
+  <script src="visualizer.js"></script>
+
+  <!-- Load Anime Entry intro -->
+  <script src="entry.js"></script>
+  <!-- Load App router -->
+  <script src="app.js"></script>
+</body>
+
+</html>
