@@ -1,37 +1,31 @@
 // Core SPA Application Logic for LeetCode Clone & DSA Visualizer
 document.addEventListener("DOMContentLoaded", () => {
-  // Users DB initialization & session state
-  function initUsersDB() {
-    let users = JSON.parse(localStorage.getItem("algojudge_users"));
-    if (!users) {
-      users = [
-        {
-          name: "Demo User",
-          username: "demo",
-          email: "demo@algojudge.com",
-          password: "password123",
-          points: 1420
-        }
-      ];
-      localStorage.setItem("algojudge_users", JSON.stringify(users));
-    }
-    return users;
-  }
-  initUsersDB();
-  // Always clear current session on refresh/load to enforce the animation -> login -> home flow
-  localStorage.removeItem("algojudge_current_user");
+  // API Config
+  const API_URL = "http://localhost:8000/api";
+  let authToken = null;
   let currentUser = null;
   let solvedProblems = new Set();
 
-  function updateSolvedProblemsSet() {
-    if (currentUser) {
-      const key = `solvedProblems_${currentUser.username || 'guest'}`;
-      solvedProblems = new Set(JSON.parse(localStorage.getItem(key) || "[]"));
+  async function updateSolvedProblemsSet() {
+    if (currentUser && authToken) {
+      try {
+        const response = await fetch(`${API_URL}/progress/solved`, {
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        if (response.ok) {
+          const problems = await response.json();
+          solvedProblems = new Set(problems.map(p => p.problem_slug));
+        } else {
+          solvedProblems = new Set();
+        }
+      } catch (err) {
+        console.error("Error fetching solved problems", err);
+        solvedProblems = new Set();
+      }
     } else {
       solvedProblems = new Set();
     }
   }
-
   // App State variables
   let currentPage = "dashboard";
   let activeProblem = null;
@@ -117,10 +111,28 @@ document.addEventListener("DOMContentLoaded", () => {
     setupCardMouseTracking();
     
     // Check initial authentication (with modular entry animation check)
-    const runInitialRedirect = () => {
+    const runInitialRedirect = async () => {
+      authToken = localStorage.getItem("algojudge_token");
+      if (authToken) {
+        try {
+          const response = await fetch(`${API_URL}/users/me`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+          });
+          if (response.ok) {
+            currentUser = await response.json();
+            await updateSolvedProblemsSet();
+            launchApp();
+            return;
+          } else {
+            localStorage.removeItem("algojudge_token");
+            authToken = null;
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
       currentUser = null;
-      localStorage.removeItem("algojudge_current_user");
-      updateSolvedProblemsSet();
+      await updateSolvedProblemsSet();
       showPage("login");
     };
 
@@ -449,7 +461,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function logoutUser() {
     currentUser = null;
-    localStorage.removeItem("algojudge_current_user");
+    authToken = null;
+    localStorage.removeItem("algojudge_token");
     updateSolvedProblemsSet();
     showPage("login");
   }
@@ -576,32 +589,48 @@ document.addEventListener("DOMContentLoaded", () => {
       hideError();
     });
 
-    signinForm.addEventListener("submit", (e) => {
+    signinForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       hideError();
 
       const usernameOrEmail = document.getElementById("signin-username").value.trim().toLowerCase();
       const password = document.getElementById("signin-password").value;
 
-      const users = JSON.parse(localStorage.getItem("algojudge_users")) || [];
-      const user = users.find(u => 
-        (u.username.toLowerCase() === usernameOrEmail || u.email.toLowerCase() === usernameOrEmail) && 
-        u.password === password
-      );
+      try {
+        const formData = new URLSearchParams();
+        formData.append("username", usernameOrEmail);
+        formData.append("password", password);
 
-      if (user) {
-        currentUser = user;
-        localStorage.setItem("algojudge_current_user", JSON.stringify(currentUser));
-        updateSolvedProblemsSet();
-        launchApp();
-        document.getElementById("signin-username").value = "";
-        document.getElementById("signin-password").value = "";
-      } else {
-        showError("Invalid username/email or password.");
+        const response = await fetch(`${API_URL}/auth/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: formData.toString()
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          authToken = data.access_token;
+          localStorage.setItem("algojudge_token", authToken);
+          
+          const meResponse = await fetch(`${API_URL}/users/me`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+          });
+          currentUser = await meResponse.json();
+          await updateSolvedProblemsSet();
+          launchApp();
+          document.getElementById("signin-username").value = "";
+          document.getElementById("signin-password").value = "";
+        } else {
+          showError("Invalid username or password.");
+        }
+      } catch (err) {
+        showError("Network error. Please try again.");
       }
     });
 
-    signupForm.addEventListener("submit", (e) => {
+    signupForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       hideError();
 
@@ -620,34 +649,57 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const users = JSON.parse(localStorage.getItem("algojudge_users")) || [];
-      const userExists = users.some(u => u.email.toLowerCase() === email.toLowerCase());
-
-      if (userExists) {
-        showError("An account with this email already exists.");
-        return;
-      }
-
       const username = email.split("@")[0].replace(/[^a-zA-Z0-9]/g, "");
-      const newUser = {
-        name,
-        username,
-        email,
-        password,
-        points: 0
-      };
 
-      users.push(newUser);
-      localStorage.setItem("algojudge_users", JSON.stringify(users));
+      try {
+        const response = await fetch(`${API_URL}/auth/register`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            username: username,
+            email: email,
+            password: password
+          })
+        });
 
-      currentUser = newUser;
-      localStorage.setItem("algojudge_current_user", JSON.stringify(currentUser));
-      updateSolvedProblemsSet();
-      launchApp();
+        if (response.ok) {
+          // Login automatically after register
+          const formData = new URLSearchParams();
+          formData.append("username", username);
+          formData.append("password", password);
+          
+          const loginRes = await fetch(`${API_URL}/auth/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: formData.toString()
+          });
 
-      document.getElementById("signup-name").value = "";
-      document.getElementById("signup-email").value = "";
-      document.getElementById("signup-password").value = "";
+          if (loginRes.ok) {
+            const data = await loginRes.json();
+            authToken = data.access_token;
+            localStorage.setItem("algojudge_token", authToken);
+            
+            const meRes = await fetch(`${API_URL}/users/me`, {
+              headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            currentUser = await meRes.json();
+            await updateSolvedProblemsSet();
+            launchApp();
+
+            document.getElementById("signup-name").value = "";
+            document.getElementById("signup-email").value = "";
+            document.getElementById("signup-password").value = "";
+            document.getElementById("signup-confirm-password").value = "";
+          }
+        } else {
+          const errData = await response.json();
+          showError(errData.detail || "Registration failed.");
+        }
+      } catch (err) {
+        showError("Network error. Please try again.");
+      }
       document.getElementById("signup-confirm-password").value = "";
     });
 
@@ -2019,16 +2071,40 @@ document.addEventListener("DOMContentLoaded", () => {
       openConsoleTab();
       logToConsole("Submitting code to production judge...", "info");
       
-      setTimeout(() => {
+      setTimeout(async () => {
         logToConsole("✓ 10/10 Test Cases Passed.", "success");
         logToConsole("✓ Performance verification complete.", "success");
         logToConsole("-----------------------------------------------", "gray");
         logToConsole("STATUS: ACCEPTED (Confetti pop!)", "final-success");
         
-        // Add to solved database
-        solvedProblems.add(activeProblem.id);
-        const key = `solvedProblems_${currentUser ? (currentUser.username || 'guest') : 'guest'}`;
-        localStorage.setItem(key, JSON.stringify(Array.from(solvedProblems)));
+        // Add to solved database via API
+        if (currentUser && authToken) {
+          try {
+            await fetch(`${API_URL}/progress/submit`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${authToken}`
+              },
+              body: JSON.stringify({
+                problem_slug: activeProblem.id,
+                language: activeLanguage
+              })
+            });
+            solvedProblems.add(activeProblem.id);
+            // Refresh current user points
+            const meRes = await fetch(`${API_URL}/users/me`, {
+              headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            if (meRes.ok) {
+              currentUser = await meRes.json();
+            }
+          } catch (e) {
+            console.error("Failed to submit problem to backend", e);
+          }
+        } else {
+          solvedProblems.add(activeProblem.id);
+        }
         
         // Log submission for Analytics
         const submissionsKey = `submissions_${currentUser ? (currentUser.username || 'guest') : 'guest'}`;

@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    container_name: algojudge_db
+    restart: always
+    environment:
+      POSTGRES_USER: algojudge
+      POSTGRES_PASSWORD: newpass123
+      POSTGRES_DB: algojudge_db
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

@@ -38,6 +38,11 @@
 </head>
 
 <body class="bg-[#0d1117] text-gray-100 font-sans h-full flex overflow-hidden">
+  <script>
+    window.onerror = function(msg, url, line, col, err) {
+      document.body.innerHTML = '<div style="color:red; background:white; padding:20px; position:absolute; z-index:99999; width:100%; top:0; font-family:monospace; font-size:16px;"><strong>JS ERROR:</strong><br>' + msg + '<br>File: ' + url + '<br>Line: ' + line + '</div>';
+    };
+  </script>
 
   <!-- ==================== LOGIN VIEW ==================== -->
   <section id="login-view"
@@ -1569,7 +1574,7 @@
   <!-- Load Anime Entry intro -->
   <script src="entry.js"></script>
   <!-- Load App router -->
-  <script src="app.js"></script>
+  <script src="app.js?v=2"></script>
 </body>
 
 </html>
