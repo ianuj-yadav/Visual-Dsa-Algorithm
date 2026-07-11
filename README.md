@@ -70,4 +70,4 @@ Or click **"Sign In as Demo User"** / **"Continue as Guest"** on the login scree
 
 ## License
 
-Made with ❤️ by the AlgoJudge Team
+Made with ❤️ by the AlgoJudge Team ❤️
