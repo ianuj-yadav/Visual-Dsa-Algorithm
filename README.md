@@ -15,7 +15,7 @@ A premium, fully client-side coding interview preparation platform with algorith
 
 ## How to Run
 
-This is a **static website** — no build step or server installation required.
+This is a static website — no build step or server installation required.
 
 ### Option 1: Python (recommended)
 ```bash
