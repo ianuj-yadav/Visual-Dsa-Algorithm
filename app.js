@@ -1,31 +1,37 @@
 // Core SPA Application Logic for LeetCode Clone & DSA Visualizer
 document.addEventListener("DOMContentLoaded", () => {
-  // API Config
-  const API_URL = "http://localhost:8000/api";
-  let authToken = null;
+  // Users DB initialization & session state
+  function initUsersDB() {
+    let users = JSON.parse(localStorage.getItem("algojudge_users"));
+    if (!users) {
+      users = [
+        {
+          name: "Demo User",
+          username: "demo",
+          email: "demo@algojudge.com",
+          password: "password123",
+          points: 1420
+        }
+      ];
+      localStorage.setItem("algojudge_users", JSON.stringify(users));
+    }
+    return users;
+  }
+  initUsersDB();
+  // Always clear current session on refresh/load to enforce the animation -> login -> home flow
+  localStorage.removeItem("algojudge_current_user");
   let currentUser = null;
   let solvedProblems = new Set();
 
-  async function updateSolvedProblemsSet() {
-    if (currentUser && authToken) {
-      try {
-        const response = await fetch(`${API_URL}/progress/solved`, {
-          headers: { 'Authorization': `Bearer ${authToken}` }
-        });
-        if (response.ok) {
-          const problems = await response.json();
-          solvedProblems = new Set(problems.map(p => p.problem_slug));
-        } else {
-          solvedProblems = new Set();
-        }
-      } catch (err) {
-        console.error("Error fetching solved problems", err);
-        solvedProblems = new Set();
-      }
+  function updateSolvedProblemsSet() {
+    if (currentUser) {
+      const key = `solvedProblems_${currentUser.username || 'guest'}`;
+      solvedProblems = new Set(JSON.parse(localStorage.getItem(key) || "[]"));
     } else {
       solvedProblems = new Set();
     }
   }
+
   // App State variables
   let currentPage = "dashboard";
   let activeProblem = null;
@@ -111,28 +117,10 @@ document.addEventListener("DOMContentLoaded", () => {
     setupCardMouseTracking();
     
     // Check initial authentication (with modular entry animation check)
-    const runInitialRedirect = async () => {
-      authToken = localStorage.getItem("algojudge_token");
-      if (authToken) {
-        try {
-          const response = await fetch(`${API_URL}/users/me`, {
-            headers: { 'Authorization': `Bearer ${authToken}` }
-          });
-          if (response.ok) {
-            currentUser = await response.json();
-            await updateSolvedProblemsSet();
-            launchApp();
-            return;
-          } else {
-            localStorage.removeItem("algojudge_token");
-            authToken = null;
-          }
-        } catch (err) {
-          console.error(err);
-        }
-      }
+    const runInitialRedirect = () => {
       currentUser = null;
-      await updateSolvedProblemsSet();
+      localStorage.removeItem("algojudge_current_user");
+      updateSolvedProblemsSet();
       showPage("login");
     };
 
@@ -461,8 +449,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function logoutUser() {
     currentUser = null;
-    authToken = null;
-    localStorage.removeItem("algojudge_token");
+    localStorage.removeItem("algojudge_current_user");
     updateSolvedProblemsSet();
     showPage("login");
   }
@@ -579,6 +566,8 @@ document.addEventListener("DOMContentLoaded", () => {
       signinForm.classList.remove("hidden");
       signupForm.classList.add("hidden");
       hideError();
+      resetPasswordVisibility();
+      resetTurnstiles();
     });
 
     tabSignUp.addEventListener("click", () => {
@@ -587,50 +576,38 @@ document.addEventListener("DOMContentLoaded", () => {
       signupForm.classList.remove("hidden");
       signinForm.classList.add("hidden");
       hideError();
+      resetPasswordVisibility();
+      resetTurnstiles();
     });
 
-    signinForm.addEventListener("submit", async (e) => {
+    signinForm.addEventListener("submit", (e) => {
       e.preventDefault();
       hideError();
 
       const usernameOrEmail = document.getElementById("signin-username").value.trim().toLowerCase();
       const password = document.getElementById("signin-password").value;
 
-      try {
-        const formData = new URLSearchParams();
-        formData.append("username", usernameOrEmail);
-        formData.append("password", password);
+      const users = JSON.parse(localStorage.getItem("algojudge_users")) || [];
+      const user = users.find(u => 
+        (u.username.toLowerCase() === usernameOrEmail || u.email.toLowerCase() === usernameOrEmail) && 
+        u.password === password
+      );
 
-        const response = await fetch(`${API_URL}/auth/login`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          body: formData.toString()
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          authToken = data.access_token;
-          localStorage.setItem("algojudge_token", authToken);
-          
-          const meResponse = await fetch(`${API_URL}/users/me`, {
-            headers: { 'Authorization': `Bearer ${authToken}` }
-          });
-          currentUser = await meResponse.json();
-          await updateSolvedProblemsSet();
-          launchApp();
-          document.getElementById("signin-username").value = "";
-          document.getElementById("signin-password").value = "";
-        } else {
-          showError("Invalid username or password.");
-        }
-      } catch (err) {
-        showError("Network error. Please try again.");
+      if (user) {
+        currentUser = user;
+        localStorage.setItem("algojudge_current_user", JSON.stringify(currentUser));
+        updateSolvedProblemsSet();
+        launchApp();
+        document.getElementById("signin-username").value = "";
+        document.getElementById("signin-password").value = "";
+        resetPasswordVisibility();
+        resetTurnstiles();
+      } else {
+        showError("Invalid username/email or password.");
       }
     });
 
-    signupForm.addEventListener("submit", async (e) => {
+    signupForm.addEventListener("submit", (e) => {
       e.preventDefault();
       hideError();
 
@@ -649,58 +626,37 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const username = email.split("@")[0].replace(/[^a-zA-Z0-9]/g, "");
+      const users = JSON.parse(localStorage.getItem("algojudge_users")) || [];
+      const userExists = users.some(u => u.email.toLowerCase() === email.toLowerCase());
 
-      try {
-        const response = await fetch(`${API_URL}/auth/register`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            username: username,
-            email: email,
-            password: password
-          })
-        });
-
-        if (response.ok) {
-          // Login automatically after register
-          const formData = new URLSearchParams();
-          formData.append("username", username);
-          formData.append("password", password);
-          
-          const loginRes = await fetch(`${API_URL}/auth/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: formData.toString()
-          });
-
-          if (loginRes.ok) {
-            const data = await loginRes.json();
-            authToken = data.access_token;
-            localStorage.setItem("algojudge_token", authToken);
-            
-            const meRes = await fetch(`${API_URL}/users/me`, {
-              headers: { 'Authorization': `Bearer ${authToken}` }
-            });
-            currentUser = await meRes.json();
-            await updateSolvedProblemsSet();
-            launchApp();
-
-            document.getElementById("signup-name").value = "";
-            document.getElementById("signup-email").value = "";
-            document.getElementById("signup-password").value = "";
-            document.getElementById("signup-confirm-password").value = "";
-          }
-        } else {
-          const errData = await response.json();
-          showError(errData.detail || "Registration failed.");
-        }
-      } catch (err) {
-        showError("Network error. Please try again.");
+      if (userExists) {
+        showError("An account with this email already exists.");
+        return;
       }
+
+      const username = email.split("@")[0].replace(/[^a-zA-Z0-9]/g, "");
+      const newUser = {
+        name,
+        username,
+        email,
+        password,
+        points: 0
+      };
+
+      users.push(newUser);
+      localStorage.setItem("algojudge_users", JSON.stringify(users));
+
+      currentUser = newUser;
+      localStorage.setItem("algojudge_current_user", JSON.stringify(currentUser));
+      updateSolvedProblemsSet();
+      launchApp();
+
+      document.getElementById("signup-name").value = "";
+      document.getElementById("signup-email").value = "";
+      document.getElementById("signup-password").value = "";
       document.getElementById("signup-confirm-password").value = "";
+      resetPasswordVisibility();
+      resetTurnstiles();
     });
 
     document.getElementById("btn-demo-login").addEventListener("click", () => {
@@ -735,6 +691,149 @@ document.addEventListener("DOMContentLoaded", () => {
       updateSolvedProblemsSet();
       launchApp();
     });
+
+    // Social Media Logins
+    const loginWithSocial = (provider) => {
+      const socialUsers = {
+        google: {
+          name: "Google User",
+          username: "google_user",
+          email: "user@gmail.com",
+          points: 100
+        },
+        github: {
+          name: "GitHub Developer",
+          username: "github_dev",
+          email: "dev@github.com",
+          points: 250
+        },
+        facebook: {
+          name: "Facebook Friend",
+          username: "fb_friend",
+          email: "friend@facebook.com",
+          points: 50
+        }
+      };
+
+      currentUser = socialUsers[provider] || socialUsers.google;
+      localStorage.setItem("algojudge_current_user", JSON.stringify(currentUser));
+      updateSolvedProblemsSet();
+      launchApp();
+    };
+
+    document.getElementById("btn-google-login").addEventListener("click", () => loginWithSocial("google"));
+    document.getElementById("btn-github-login").addEventListener("click", () => loginWithSocial("github"));
+    document.getElementById("btn-facebook-login").addEventListener("click", () => loginWithSocial("facebook"));
+
+    // Password visibility toggles handler
+    const toggleButtons = document.querySelectorAll(".toggle-password-btn");
+    toggleButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const targetId = btn.getAttribute("data-target");
+        const passwordInput = document.getElementById(targetId);
+        const icon = btn.querySelector("i");
+        if (passwordInput && icon) {
+          if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            icon.className = "far fa-eye-slash text-xs";
+          } else {
+            passwordInput.type = "password";
+            icon.className = "far fa-eye text-xs";
+          }
+        }
+      });
+    });
+
+    function resetPasswordVisibility() {
+      toggleButtons.forEach(btn => {
+        const targetId = btn.getAttribute("data-target");
+        const passwordInput = document.getElementById(targetId);
+        const icon = btn.querySelector("i");
+        if (passwordInput && icon) {
+          passwordInput.type = "password";
+          icon.className = "far fa-eye text-xs";
+        }
+      });
+    }
+
+    // Turnstile bot checker functionality
+    const turnstiles = document.querySelectorAll(".turnstile-widget");
+    turnstiles.forEach(widget => {
+      widget.addEventListener("click", () => {
+        if (widget.classList.contains("verified") || widget.classList.contains("verifying")) return;
+
+        widget.classList.add("verifying");
+        const box = widget.querySelector(".checkmark-box");
+        const icon = widget.querySelector(".check-icon");
+        const spinner = widget.querySelector(".spinner");
+        const statusText = widget.querySelector(".turnstile-status-text");
+
+        // Animate selection box out, start spinner rotation
+        box.classList.add("scale-0");
+        spinner.classList.remove("hidden");
+        statusText.innerText = "Verifying...";
+
+        setTimeout(() => {
+          spinner.classList.add("hidden");
+          box.classList.remove("scale-0");
+          box.classList.remove("border-gray-600");
+          box.classList.add("border-emerald-500");
+          icon.classList.remove("scale-0");
+          icon.classList.add("scale-100");
+          
+          statusText.innerText = "Success! You are human";
+          statusText.className = "font-semibold text-emerald-400 turnstile-status-text";
+          
+          widget.classList.remove("verifying");
+          widget.classList.add("verified");
+
+          // Enable the form's submit button
+          const form = widget.closest("form");
+          if (form) {
+            const submitBtn = form.querySelector('button[type="submit"]');
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.classList.remove("opacity-50", "pointer-events-none");
+            }
+          }
+        }, 1200);
+      });
+    });
+
+    function resetTurnstiles() {
+      turnstiles.forEach(widget => {
+        const box = widget.querySelector(".checkmark-box");
+        const icon = widget.querySelector(".check-icon");
+        const spinner = widget.querySelector(".spinner");
+        const statusText = widget.querySelector(".turnstile-status-text");
+        
+        widget.classList.remove("verified", "verifying");
+        if (box) {
+          box.classList.remove("scale-0", "border-emerald-500");
+          box.classList.add("border-gray-600");
+        }
+        if (icon) {
+          icon.classList.add("scale-0");
+          icon.classList.remove("scale-100");
+        }
+        if (spinner) spinner.classList.add("hidden");
+        if (statusText) {
+          statusText.innerText = "Verify that you are human";
+          statusText.className = "font-semibold text-gray-300 turnstile-status-text";
+        }
+      });
+
+      const signinBtn = document.getElementById("signin-submit-btn");
+      const signupBtn = document.getElementById("signup-submit-btn");
+      if (signinBtn) {
+        signinBtn.disabled = true;
+        signinBtn.classList.add("opacity-50", "pointer-events-none");
+      }
+      if (signupBtn) {
+        signupBtn.disabled = true;
+        signupBtn.classList.add("opacity-50", "pointer-events-none");
+      }
+    }
   }
 
   // --- NAVIGATION & ROUTING ---
@@ -865,6 +964,46 @@ document.addEventListener("DOMContentLoaded", () => {
         showPage("analytics");
       });
     }
+
+    // Mobile menu toggle interactions
+    const mobileToggle = document.getElementById("mobile-menu-toggle");
+    const mobileClose = document.getElementById("mobile-menu-close");
+    const backdrop = document.getElementById("sidebar-backdrop");
+    const sidebarEl = document.getElementById("sidebar-nav");
+
+    const openMobileMenu = () => {
+      if (sidebarEl && backdrop) {
+        sidebarEl.classList.remove("hidden");
+        sidebarEl.classList.add("sidebar-open");
+        backdrop.classList.remove("hidden");
+        void backdrop.offsetWidth; // Force reflow
+        backdrop.classList.remove("opacity-0", "pointer-events-none");
+      }
+    };
+
+    const closeMobileMenu = () => {
+      if (sidebarEl && backdrop) {
+        sidebarEl.classList.remove("sidebar-open");
+        backdrop.classList.add("opacity-0", "pointer-events-none");
+        setTimeout(() => {
+          backdrop.classList.add("hidden");
+        }, 300);
+      }
+    };
+
+    if (mobileToggle) mobileToggle.addEventListener("click", openMobileMenu);
+    if (mobileClose) mobileClose.addEventListener("click", closeMobileMenu);
+    if (backdrop) backdrop.addEventListener("click", closeMobileMenu);
+
+    // Auto-close sidebar drawer when navigating on mobile
+    const navLinks = sidebarEl ? sidebarEl.querySelectorAll("nav a, #sidebar-logo-link, #sidebar-profile-card, #sidebar-logout-btn") : [];
+    navLinks.forEach(link => {
+      link.addEventListener("click", () => {
+        if (window.innerWidth < 768) {
+          closeMobileMenu();
+        }
+      });
+    });
   }
 
   function setupHomeViewScroll() {
@@ -2071,40 +2210,16 @@ document.addEventListener("DOMContentLoaded", () => {
       openConsoleTab();
       logToConsole("Submitting code to production judge...", "info");
       
-      setTimeout(async () => {
+      setTimeout(() => {
         logToConsole("✓ 10/10 Test Cases Passed.", "success");
         logToConsole("✓ Performance verification complete.", "success");
         logToConsole("-----------------------------------------------", "gray");
         logToConsole("STATUS: ACCEPTED (Confetti pop!)", "final-success");
         
-        // Add to solved database via API
-        if (currentUser && authToken) {
-          try {
-            await fetch(`${API_URL}/progress/submit`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${authToken}`
-              },
-              body: JSON.stringify({
-                problem_slug: activeProblem.id,
-                language: activeLanguage
-              })
-            });
-            solvedProblems.add(activeProblem.id);
-            // Refresh current user points
-            const meRes = await fetch(`${API_URL}/users/me`, {
-              headers: { 'Authorization': `Bearer ${authToken}` }
-            });
-            if (meRes.ok) {
-              currentUser = await meRes.json();
-            }
-          } catch (e) {
-            console.error("Failed to submit problem to backend", e);
-          }
-        } else {
-          solvedProblems.add(activeProblem.id);
-        }
+        // Add to solved database
+        solvedProblems.add(activeProblem.id);
+        const key = `solvedProblems_${currentUser ? (currentUser.username || 'guest') : 'guest'}`;
+        localStorage.setItem(key, JSON.stringify(Array.from(solvedProblems)));
         
         // Log submission for Analytics
         const submissionsKey = `submissions_${currentUser ? (currentUser.username || 'guest') : 'guest'}`;
