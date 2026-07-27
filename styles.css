@@ -35,7 +35,9 @@ html.light {
   --text-primary: #0f172a;
   --text-secondary: #64748b;
   
-  --accent-purple-glow: rgba(168, 85, 247, 0.15);
+  --accent-purple: #4f46e5; /* Premium Indigo */
+  --accent-purple-glow: rgba(79, 70, 229, 0.15);
+  
   --accent-cyan-glow: rgba(6, 182, 212, 0.15);
   --accent-emerald-glow: rgba(16, 185, 129, 0.15);
   --accent-ruby-glow: rgba(239, 68, 68, 0.15);
@@ -98,14 +100,21 @@ html.light .glass-panel {
 /* Page transitions structure */
 .view-transition {
   opacity: 0;
-  transform: translateY(12px);
-  filter: blur(4px);
-  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+  transform: scale(0.985) translateY(10px);
+  filter: blur(3px);
+  transition:
+    opacity 0.18s cubic-bezier(0.4, 0, 1, 1),
+    transform 0.18s cubic-bezier(0.4, 0, 1, 1),
+    filter 0.15s ease;
 }
 .view-transition.active-view {
   opacity: 1;
-  transform: translateY(0);
+  transform: scale(1) translateY(0);
   filter: blur(0);
+  transition:
+    opacity 0.38s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1),
+    filter 0.3s ease;
 }
 
 /* Ambient Background Blobs Pulsating Animation */
@@ -452,26 +461,115 @@ html.light #victory-modal > div {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05) !important;
 }
 
-/* Text colors globally */
+/* Text colors globally in light mode */
 html.light p,
 html.light h1,
 html.light h2,
 html.light h3,
-html.light span,
-html.light strong,
-html.light div,
-html.light li,
-html.light a {
+html.light li {
   color: var(--text-primary);
 }
 
+html.light a:not([class*="text-"]) {
+  color: var(--text-primary);
+}
+
+/* Light mode text color overrides for Tailwind utility classes */
+html.light .text-white { color: var(--text-primary) !important; }
+html.light .text-gray-100 { color: var(--text-primary) !important; }
+html.light .text-gray-200 { color: var(--text-primary) !important; }
+html.light .text-gray-300 { color: var(--text-primary) !important; }
 html.light .text-gray-400,
 html.light .text-gray-500,
-html.light .text-gray-600 {
+html.light .text-gray-600,
+html.light .text-slate-400,
+html.light .text-slate-500 {
   color: var(--text-secondary) !important;
 }
 
-html.light button {
+html.light .text-purple-300,
+html.light .text-purple-400,
+html.light .text-purple-500 {
+  color: #4f46e5 !important; /* Premium Indigo */
+}
+
+/* Light mode purple-to-indigo theme overrides */
+html.light .bg-purple-600 {
+  background-color: #4f46e5 !important;
+}
+html.light .border-purple-500 {
+  border-color: #6366f1 !important;
+}
+html.light .hover\:bg-purple-500:hover {
+  background-color: #4338ca !important;
+}
+html.light .bg-purple-500\/10 {
+  background-color: rgba(79, 70, 229, 0.08) !important;
+}
+html.light .bg-purple-500\/5 {
+  background-color: rgba(79, 70, 229, 0.04) !important;
+}
+html.light .bg-purple-950\/20 {
+  background-color: rgba(79, 70, 229, 0.05) !important;
+  border-color: rgba(79, 70, 229, 0.15) !important;
+}
+html.light .bg-purple-950\/40 {
+  background-color: rgba(79, 70, 229, 0.08) !important;
+  border-color: rgba(79, 70, 229, 0.25) !important;
+}
+html.light .glow-purple {
+  box-shadow: 0 0 20px rgba(79, 70, 229, 0.15) !important;
+}
+html.light .shadow-purple-500\/20 {
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.12) !important;
+}
+html.light .text-cyan-300,
+html.light .text-cyan-400,
+html.light .text-cyan-500 {
+  color: #0369a1 !important; /* Darker readable cyan */
+}
+html.light .text-emerald-400,
+html.light .text-green-400,
+html.light .text-green-500 {
+  color: #15803d !important; /* Darker readable green */
+}
+html.light .text-red-400,
+html.light .text-rose-400 {
+  color: #b91c1c !important; /* Darker readable red */
+}
+html.light .text-amber-400,
+html.light .text-amber-500 {
+  color: #b45309 !important; /* Darker readable amber */
+}
+
+/* EXCEPTIONS: Restore light/bright colors inside dark containers/buttons in light mode */
+html.light .bg-gray-900 .text-purple-400,
+html.light .bg-gray-900 .text-purple-300 { color: #c084fc !important; }
+html.light .bg-gray-900 .text-cyan-400,
+html.light .bg-gray-900 .text-cyan-300 { color: #22d3ee !important; }
+html.light .bg-gray-900 .text-emerald-400,
+html.light .bg-gray-900 .text-green-400 { color: #34d399 !important; }
+html.light .bg-gray-900 .text-rose-400,
+html.light .bg-gray-900 .text-red-400 { color: #fb7185 !important; }
+html.light .bg-gray-900 .text-gray-400 { color: #94a3b8 !important; }
+html.light .bg-gray-900 .text-white { color: #ffffff !important; }
+
+html.light .bg-purple-600 .text-white,
+html.light .bg-purple-600 *,
+html.light .bg-purple-500 .text-white,
+html.light .bg-purple-500 *,
+html.light .bg-purple-700 .text-white,
+html.light .bg-purple-700 *,
+html.light button[type="submit"],
+html.light button[type="submit"] *,
+html.light button.bg-purple-600,
+html.light button.bg-purple-600 *,
+html.light .w-12.bg-gradient-to-tr.from-purple-600 *,
+html.light .w-8.bg-gradient-to-tr.from-purple-600 * {
+  color: #ffffff !important;
+}
+
+html.light button:not(.bg-purple-600):not([type="submit"]) {
   color: var(--text-primary);
 }
 
@@ -521,6 +619,63 @@ html.light #vis-code-tracker > div {
 
 html.light #tracker-lines-box .text-gray-300 {
   color: #334155 !important;
+}
+
+/* Layout overrides for light theme compatibility */
+html.light .bg-\[\#0d1117\] {
+  background-color: #f8fafc !important;
+}
+html.light .bg-\[\#161b22\] {
+  background-color: #ffffff !important;
+}
+html.light .bg-\[\#161b22\]\/40,
+html.light .bg-\[\#161b22\]\/50 {
+  background-color: #f1f5f9 !important;
+}
+html.light .bg-\[\#0d1117\]\/60 {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+}
+html.light .bg-\[\#0d1117\]\/80 {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+}
+html.light .bg-\[\#21262d\] {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+}
+html.light .bg-\[\#21262d\]:hover {
+  background-color: #e2e8f0 !important;
+}
+html.light .border-\[\#30363d\] {
+  border-color: #e2e8f0 !important;
+}
+html.light .border-\[\#30363d\]\/50 {
+  border-color: rgba(226, 232, 240, 0.5) !important;
+}
+
+/* Studio Workspace specific overrides */
+html.light #studio-code-tracker {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+  border-color: #e2e8f0 !important;
+}
+html.light #studio-code-tracker > div:first-child {
+  background-color: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+}
+html.light #studio-code-lines {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+  color: var(--text-primary) !important;
+}
+html.light #console-panel {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+html.light #console-panel > div:first-child {
+  background-color: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+}
+html.light #console-output {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  color: var(--text-primary) !important;
 }
 
 /* Sidebar navigation interactions */
@@ -1039,20 +1194,25 @@ select:hover {
   border-color: rgba(148, 163, 184, 0.3);
 }
 
-/* 13. Smooth page entry animation — refined fade+slide */
-.view-transition {
-  opacity: 0;
-  transform: translateY(8px);
-  filter: blur(2px);
-  transition:
-    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.5s ease;
+/* 13. Premium button micro-interactions & elastic animations */
+button,
+a,
+.cursor-pointer,
+.timeline-card,
+.glass-panel {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
-.view-transition.active-view {
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
+
+button:active:not(:disabled),
+a:active:not(:disabled),
+.cursor-pointer:active {
+  transform: scale(0.95) !important;
+}
+
+#sidebar-nav a {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 /* 14. Victory modal refined entrance */
@@ -1297,4 +1457,38 @@ html.light .profile-view-card {
 html.light .profile-view-subcard {
   background-color: #f8fafc !important;
   border-color: #e2e8f0 !important;
+}
+
+/* Responsive mobile drawer styles for the sidebar navigation */
+@media (max-width: 768px) {
+  #sidebar-nav {
+    position: fixed !important;
+    top: 0;
+    left: -270px;
+    bottom: 0;
+    width: 260px;
+    height: 100% !important;
+    z-index: 50 !important;
+    display: flex !important; /* Force flex display when rendered */
+    transition: left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.4);
+  }
+  
+  #sidebar-nav.sidebar-open {
+    left: 0 !important;
+  }
+
+  /* Keep sidebar offscreen when not open, regardless of .hidden status */
+  #sidebar-nav:not(.sidebar-open) {
+    left: -270px !important;
+  }
+
+  /* Make backdrop transitions smooth */
+  #sidebar-backdrop {
+    display: block !important;
+  }
+  #sidebar-backdrop:not(.hidden) {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
 }
